@@ -57,41 +57,21 @@ public class LoginWindow extends JFrame implements ActionListener {
             // send data from the fields to the database connection handler
 
             login(); // handle the logging in procedure
+
+            new MainMenuWindow(database);
         }
     }
 
     private void login() { // handle logging in to the database
         if(!database.connect()) { // upon failing to log in, show message box
-
-            // ========= Message box ==============
-            final JFrame popUp = new JFrame("Failed to log in!");
-
-            // ========= Text in the pop up ===========
-            JLabel label = new JLabel("Program was unable to log in to the database. Please try again");
-            label.setBounds(20, 50, 400, 30);
-
-            // ========= Button to continue ===========
-            JButton b = new JButton("OK");
-            b.setBounds(200,125,100, 50);
-
-            b.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    popUp.dispose(); // delete window after user clicks the button
-                }
-            });
-
-            popUp.setSize(500, 200);
-
-            popUp.add(label);
-            popUp.add(b);
-
-            popUp.setLayout(null);
-            popUp.setVisible(true);
+            new MessageWindow("Failed to log in!",
+                    "Program was unable to log in to the database. Please try again");
         }
         else { // for now, disconnect from the database and end application after successful login
+            new MessageWindow("Successfully logged in1",
+                    "Program successfully logged in to the database.");
             database.disconnect();
-            System.exit(1);
+            //System.exit(1);
         } // will be changed later
     }
 }
