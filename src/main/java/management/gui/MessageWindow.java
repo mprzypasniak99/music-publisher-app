@@ -33,6 +33,8 @@ public class MessageWindow extends JFrame implements ActionListener {
         // ============= WINDOW =====================
         setSize(width + 100, 200);
 
+        setLocationRelativeTo(null);
+
         add(message);
         add(button);
 

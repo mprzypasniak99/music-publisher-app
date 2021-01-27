@@ -41,6 +41,8 @@ public class LoginWindow extends JFrame implements ActionListener {
 
         setSize(400, 400);
 
+        setLocationRelativeTo(null);
+
         add(lUs); add(lPas);
 
         setLayout(null);
@@ -56,21 +58,23 @@ public class LoginWindow extends JFrame implements ActionListener {
             database.addLoginData(username.getText(), new String(pass.getPassword()));
             // send data from the fields to the database connection handler
 
-            login(); // handle the logging in procedure
-
-            new MainMenuWindow(database);
+            if(login()) {
+                setVisible(false);
+                new MainMenuWindow(database); // handle the logging in procedure
+            }
         }
     }
 
-    private void login() { // handle logging in to the database
+    private boolean login() { // handle logging in to the database
         if(!database.connect()) { // upon failing to log in, show message box
             new MessageWindow("Failed to log in!",
                     "Program was unable to log in to the database. Please try again");
+            return false;
         }
         else { // for now, disconnect from the database and end application after successful login
-            new MessageWindow("Successfully logged in1",
-                    "Program successfully logged in to the database.");
-            database.disconnect();
+            return true;
+            //new MessageWindow("Successfully logged in1",
+                    //"Program successfully logged in to the database.");
             //System.exit(1);
         } // will be changed later
     }
