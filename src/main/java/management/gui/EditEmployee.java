@@ -100,7 +100,7 @@ public class EditEmployee extends JFrame {
         add(cb);
         add(sp);
         setLayout(null);
-        setSize(280, 700);
+        setSize(290, 720);
         setLocationRelativeTo(null);
         setVisible(true);
     }

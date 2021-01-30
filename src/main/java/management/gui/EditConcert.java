@@ -68,16 +68,16 @@ public class EditConcert extends JFrame {
                 }
             }
         });
-        sp.setBounds(15, 10, 250, 500);
-        l.setBounds(15, 510, 100, 30);
+        sp.setBounds(10, 10, 250, 500);
+        l.setBounds(10, 510, 100, 30);
         ftf.setBounds(120, 510, 100, 30);
-        l2.setBounds(15, 540, 100, 30);
+        l2.setBounds(10, 540, 100, 30);
         tf.setBounds(120, 540, 100, 30);
-        l3.setBounds(15, 570, 100, 30);
+        l3.setBounds(10, 570, 100, 30);
         tf2.setBounds(120, 570, 100, 30);
-        l4.setBounds(15, 600, 100, 30);
+        l4.setBounds(10, 600, 100, 30);
         tf3.setBounds(120, 600, 100, 30);
-        l5.setBounds(15, 630, 100, 30);
+        l5.setBounds(10, 630, 100, 30);
         ftf2.setBounds(120, 630, 100, 30);
         jb.setBounds(120, 660, 100, 40);
         add(sp);
@@ -93,7 +93,7 @@ public class EditConcert extends JFrame {
         add(tf3);
         add(jb);
         setLayout(null);
-        setSize(240, 720);
+        setSize(290, 740);
         setLocationRelativeTo(null);
         setVisible(true);
     }

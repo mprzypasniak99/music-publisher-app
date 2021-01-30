@@ -45,7 +45,7 @@ public class EditArtist extends JFrame {
             }
         });
         add(b);
-        setSize(300, 670);
+        setSize(290, 700);
         setLocationRelativeTo(null);
         setLayout(null);
         setVisible(true);

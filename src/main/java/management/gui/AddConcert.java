@@ -65,7 +65,7 @@ public class AddConcert extends JFrame {
         add(tf3);
         add(jb);
         setLayout(null);
-        setSize(240,220);
+        setSize(240,240);
         setLocationRelativeTo(null);
         setVisible(true);
     }

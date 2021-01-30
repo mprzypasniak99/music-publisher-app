@@ -62,13 +62,13 @@ public class AddBill extends JFrame {
             }
         });
         sp.setBounds(10, 10, 250,500);
-        l.setBounds(10, 510, 100, 40);
-        ftf.setBounds(120, 510, 120, 40);
-        l2.setBounds(10, 560, 100, 40);
-        ftf2.setBounds(120, 560, 120, 40);
-        l3.setBounds(10, 610, 100, 40);
-        ftf3.setBounds(120, 610, 120, 40);
-        jb.setBounds(190, 660, 100, 40);
+        l.setBounds(10, 510, 120, 40);
+        ftf.setBounds(140, 510, 120, 40);
+        l2.setBounds(10, 560, 120, 40);
+        ftf2.setBounds(140, 560, 120, 40);
+        l3.setBounds(10, 610, 120, 40);
+        ftf3.setBounds(140, 610, 120, 40);
+        jb.setBounds(160, 660, 100, 40);
         add(l);
         add(ftf);
         add(l2);
@@ -78,7 +78,7 @@ public class AddBill extends JFrame {
         add(sp);
         add(jb);
         setLayout(null);
-        setSize(300,750);
+        setSize(290,750);
         setLocationRelativeTo(null);
         setVisible(true);
     }

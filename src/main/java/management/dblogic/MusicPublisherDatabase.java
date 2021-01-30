@@ -4,7 +4,6 @@ import management.app.MusicPublisherApp;
 import containers.*;
 import oracle.sql.NUMBER;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.Properties;
 import java.util.Vector;
@@ -846,6 +845,91 @@ public class MusicPublisherDatabase {
                 res.add(new EmployeeContainer(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4)));
             }
             rs.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return res;
+    }
+
+    public Vector<StorageMediumContainer> getStorageMedia() {
+        Vector<StorageMediumContainer> res = new Vector<>();
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM inf141302.Nosnik");) {
+            while(rs.next()) {
+                res.add(new StorageMediumContainer(rs.getString(1), rs.getDouble(2)));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return res;
+    }
+
+    public void addStorageMedium(String typ, double cena) {
+        try(PreparedStatement stmt = conn.prepareStatement("INSERT INTO inf141302.Nosnik VALUES (?, ?)");) {
+            stmt.setString(1, typ);
+            stmt.setDouble(2, cena);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void editPrice(String typ, double cena) {
+        try(PreparedStatement stmt = conn.prepareStatement("UPDATE inf141302.Nosnik SET cena_nosnika = ? WHERE typ = ?");) {
+            stmt.setString(2, typ);
+            stmt.setDouble(1, cena);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void addAlbumSell(long id_albumu, double cena, long ilosc, String typ_nosnika) {
+        try(PreparedStatement stmt = conn.prepareStatement("INSERT INTO inf141302.Sprzedaz VALUES (?, ?, ?, ?)");) {
+            stmt.setLong(1, id_albumu);
+            stmt.setDouble(2, cena);
+            stmt.setLong(3, ilosc);
+            stmt.setString(4, typ_nosnika);
+            stmt.executeUpdate();
+            conn.commit();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void editAlbumSell(long id_albumu, double cena, long ilosc, String typ_nosnika) {
+        try(PreparedStatement stmt = conn.prepareStatement("UPDATE inf141302.Sprzedaz SET cena_za_sztuke = ?, ilosc_sprzedanych = ? WHERE id_albumu = ? AND typ = ?");) {
+            stmt.setLong(3, id_albumu);
+            stmt.setDouble(1, cena);
+            stmt.setLong(2, ilosc);
+            stmt.setString(4, typ_nosnika);
+            stmt.executeUpdate();
+            conn.commit();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public Vector<SellContainer> getSells() {
+        Vector<SellContainer> res = new Vector<>();
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id_albumu, nazwa, cena_za_sztuke, ilosc_sprzedanych, typ, cena_nosnika FROM inf141302.Album JOIN inf141302.Sprzedaz USING(id_albumu) JOIN inf141302.Nosnik USING(typ)");) {
+            while(rs.next()) {
+                res.add(new SellContainer(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getLong(4), rs.getString(5), rs.getDouble(6)));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return res;
+    }
+
+    public double getSellReportForAlbum(long id) {
+        double res = 0;
+        try(CallableStatement cs = conn.prepareCall("{? = call inf141302.Album_zysk(?)}");) {
+            cs.registerOutParameter(1, Types.DOUBLE);
+            cs.setLong(2, id);
+            cs.execute();
+            res = cs.getDouble(1);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }

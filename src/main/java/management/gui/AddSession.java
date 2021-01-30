@@ -52,14 +52,14 @@ public class AddSession extends JFrame {
         sp2.setBounds(260, 10, 250, 500);
         l.setBounds(10, 510, 150, 30);
         ftf.setBounds(160, 510, 150, 30);
-        jb.setBounds(660, 540, 100, 40);
+        jb.setBounds(400, 540, 100, 40);
         add(sp);
         add(sp2);
         add(l);
         add(ftf);
         add(jb);
         setLayout(null);
-        setSize(800, 600);
+        setSize(530, 620);
         setLocationRelativeTo(null);
         setVisible(true);
     }

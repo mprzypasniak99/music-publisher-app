@@ -42,12 +42,12 @@ public class MainMenuWindow extends JFrame {
                 new EventsMenu(db);
             }
         });
-        JButton raports = new JButton("Raporty i zyski");
-        raports.setBounds(0, 60, 150, 20);
-        raports.addActionListener(new ActionListener() {
+        JButton reports = new JButton("Raporty i sprzedaż");
+        reports.setBounds(0, 60, 150, 20);
+        reports.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RaportsMenu(db);
+                new ReportsMenu(db);
             }
         });
         setSize(800, 600);
@@ -76,13 +76,13 @@ public class MainMenuWindow extends JFrame {
                 rec_dl.addElement(s);
             }
             JList<String> list = new JList<>(rec_dl);
-            list.setBounds(350, 60*con_l.size(), 200, 20*rec_l.size());
+            list.setBounds(350, 60+20*con_l.size(), 200, 20*rec_l.size());
             add(list);
         }
         add(artists);
         add(employees);
         add(events);
-        add(raports);
+        add(reports);
 
         add(concerts);
         add(recordings);

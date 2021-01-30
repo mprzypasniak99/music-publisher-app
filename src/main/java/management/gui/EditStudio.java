@@ -65,7 +65,7 @@ public class EditStudio extends JFrame {
         add(jb);
         add(sp);
         setLayout(null);
-        setSize(240, 640);
+        setSize(290, 680);
         setLocationRelativeTo(null);
         setVisible(true);
     }

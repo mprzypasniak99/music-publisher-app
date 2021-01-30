@@ -80,15 +80,15 @@ public class AddContract extends JFrame {
                 }
             }
         });
-        sp2.setBounds(10, 10, 250,500);
-        sp.setBounds(520, 10, 250, 500);
-        l.setBounds(10, 510, 150, 40);
-        ftf.setBounds(160, 510, 120, 40);
+        sp2.setBounds(10, 10, 270,500);
+        sp.setBounds(280, 10, 250, 500);
+        l.setBounds(10, 510, 120, 40);
+        ftf.setBounds(180, 510, 100, 40);
         l2.setBounds(10, 560, 150, 40);
-        ftf2.setBounds(160, 560, 120, 40);
+        ftf2.setBounds(180, 560, 100, 40);
         l3.setBounds(10, 610, 100, 40);
-        ftf3.setBounds(120, 610, 120, 40);
-        jb.setBounds(190, 660, 100, 40);
+        ftf3.setBounds(160, 610, 120, 40);
+        jb.setBounds(180, 660, 100, 40);
         add(l);
         add(ftf);
         add(l2);
@@ -99,7 +99,7 @@ public class AddContract extends JFrame {
         add(sp2);
         add(jb);
         setLayout(null);
-        setSize(300,750);
+        setSize(550,750);
         setLocationRelativeTo(null);
         setVisible(true);
     }

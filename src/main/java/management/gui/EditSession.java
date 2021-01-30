@@ -93,7 +93,7 @@ public class EditSession extends JFrame {
         add(ftf);
         add(jb);
         setLayout(null);
-        setSize(800, 600);
+        setSize(780, 620);
         setLocationRelativeTo(null);
         setVisible(true);
     }

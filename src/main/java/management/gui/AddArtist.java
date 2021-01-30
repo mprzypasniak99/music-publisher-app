@@ -119,6 +119,7 @@ public class AddArtist extends JFrame{
                         add(b1);
                         add(sp);
                         setSize(300, 700);
+                        setLocationRelativeTo(null);
                         repaint();
                     } else {
                         new MessageWindow("Błąd", "Brak artystów do dodania");

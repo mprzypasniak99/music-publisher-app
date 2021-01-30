@@ -96,11 +96,12 @@ public class EditAlbum extends JFrame {
         l2.setBounds(15, 540, 80, 30);
         l3.setBounds(290, 510, 120, 30);
         l4.setBounds(290, 540, 50, 30);
+        l5.setBounds(400, 540, 10, 30);
         tf1.setBounds(100, 510, 150, 30);
         tf2.setBounds(100, 540, 150, 30);
         tf3.setBounds(420, 510, 150, 30);
-        sm1.setBounds(330, 540, 50, 30);
-        sm2.setBounds(370, 540, 50, 30);
+        sm1.setBounds(350, 540, 50, 30);
+        sm2.setBounds(410, 540, 50, 30);
         sp2.setBounds(290, 10, 250, 500);
         jb.setBounds(480, 630, 100, 40);
         jb2.setBounds(290, 580, 100, 40);
@@ -109,6 +110,7 @@ public class EditAlbum extends JFrame {
         add(l2);
         add(l3);
         add(l4);
+        add(l5);
         add(tf1);
         add(tf2);
         add(tf3);
@@ -119,7 +121,7 @@ public class EditAlbum extends JFrame {
         add(sm2);
         add(sp);
         add(sp2);
-        setSize(700, 800);
+        setSize(680, 780);
         setLocationRelativeTo(null);
         setLayout(null);
         setVisible(true);

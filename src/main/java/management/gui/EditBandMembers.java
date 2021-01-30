@@ -103,7 +103,7 @@ public class EditBandMembers extends JFrame {
         add(jb2);
         add(jb3);
         setLayout(null);
-        setSize(810, 620);
+        setSize(820, 650);
         setLocationRelativeTo(null);
         setVisible(true);
         addWindowListener(new WindowListener() {

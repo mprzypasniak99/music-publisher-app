@@ -33,11 +33,11 @@ public class EditTour extends JFrame {
         JScrollPane sp2 = new JScrollPane(jl2);
         JLabel l = new JLabel("Nazwa trasy:");
         JTextField tf = new JTextField();
-        JLabel l2 = new JLabel("Data rozpoczęcia (yyyy-MM-dd):");
+        JLabel l2 = new JLabel("Data rozp. (yyyy-MM-dd):");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         DateFormatter dff = new DateFormatter(df);
         JFormattedTextField ftf = new JFormattedTextField(dff);
-        JLabel l3 = new JLabel("Data zakończenia (yyyy-MM-dd):");
+        JLabel l3 = new JLabel("Data zak. (yyyy-MM-dd):");
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
         DateFormatter dff2 = new DateFormatter(df2);
         JFormattedTextField ftf2 = new JFormattedTextField(dff2);
@@ -120,7 +120,7 @@ public class EditTour extends JFrame {
         add(jb3);
         add(jb);
         setLayout(null);
-        setSize(740, 700);
+        setSize(790, 700);
         setLocationRelativeTo(null);
         setVisible(true);
         addWindowListener(new WindowListener() {

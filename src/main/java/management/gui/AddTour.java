@@ -23,11 +23,11 @@ public class AddTour extends JFrame {
         JScrollPane sp2 = new JScrollPane(jl2);
         JLabel l = new JLabel("Nazwa trasy:");
         JTextField tf = new JTextField();
-        JLabel l2 = new JLabel("Data rozpoczęcia (yyyy-MM-dd):");
+        JLabel l2 = new JLabel("Data rozp. (yyyy-MM-dd):");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         DateFormatter dff = new DateFormatter(df);
         JFormattedTextField ftf = new JFormattedTextField(dff);
-        JLabel l3 = new JLabel("Data zakończenia (yyyy-MM-dd):");
+        JLabel l3 = new JLabel("Data zak. (yyyy-MM-dd):");
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
         DateFormatter dff2 = new DateFormatter(df2);
         JFormattedTextField ftf2 = new JFormattedTextField(dff2);
@@ -62,8 +62,8 @@ public class AddTour extends JFrame {
         ftf2.setBounds(160, 70, 150, 30);
         sp2.setBounds(320, 10, 250, 500);
         sp.setBounds(570, 10, 250, 500);
-        jb2.setBounds(560, 510, 150, 40);
-        jb.setBounds(610, 560, 100, 40);
+        jb2.setBounds(570, 510, 150, 40);
+        jb.setBounds(720, 560, 100, 40);
         add(l);
         add(l2);
         add(l3);
@@ -75,7 +75,7 @@ public class AddTour extends JFrame {
         add(jb);
         add(jb2);
         setLayout(null);
-        setSize(730, 640);
+        setSize(850, 640);
         setLocationRelativeTo(null);
         setVisible(true);
     }

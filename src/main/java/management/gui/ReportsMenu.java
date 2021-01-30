@@ -8,50 +8,66 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class ArtistsMenu extends JFrame {
+public class ReportsMenu extends JFrame {
     JButton[] buttons;
-    public ArtistsMenu(MusicPublisherDatabase db) {
-        buttons = new JButton[5];
-        // ========== ADD ARTIST ===========
-        buttons[0] = new JButton("Dodaj artystę");
+    public ReportsMenu(MusicPublisherDatabase db) {
+        buttons = new JButton[7];
+        // ========== ADD ALBUM SELL ===========
+        buttons[0] = new JButton("Dodaj sprzedaż dla albumu");
         buttons[0].addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                new AddArtist(db);
+                new AddAlbumSell(db);
             }
         });
         add(buttons[0]);
-        // ========== EDIT ARTIST ==========
-        buttons[1] = new JButton("Modyfikuj artystę");
+        // ========== EDIT ALBUM SELL ==========
+        buttons[1] = new JButton("Modyfikuj sprzedaż");
         buttons[1].addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                new EditArtist(db);
+                new EditAlbumSell(db);
             }
         });
         add(buttons[1]);
-        // ========== EDIT BAND =============
-        buttons[2] = new JButton("Modyfikuj członków zespołu");
+        // ========== ALBUM SELL REPORT =============
+        buttons[2] = new JButton("Wygeneruj raport sprzedaży albumów");
         buttons[2].addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                new EditBandMembers(db);
+                new SellReport(db);
             }
         });
         add(buttons[2]);
-        // ========== ADD ALBUM ============
-        buttons[3] = new JButton("Dodaj album");
+        // ========== CONCERT REPORT =============
+        buttons[3] = new JButton("Wygeneruj raport sprzedaży albumów");
         buttons[3].addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                new AddAlbum(db);
+                new ConcertReport(db);
             }
         });
         add(buttons[3]);
-        // ========== EDIT ALBUM ===========
-        buttons[4] = new JButton("Modyfikuj album");
+        // ========== BILL REPORT ============
+        buttons[4] = new JButton("Wygeneruj raport rachunków");
         buttons[4].addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                new EditAlbum(db);
+                new BillReport(db);
             }
         });
         add(buttons[4]);
+        // ========== CONTRACT REPORT ===========
+        buttons[5] = new JButton("Wygeneruj raport kontraktów");
+        buttons[5].addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                new ContractReport(db);
+            }
+        });
+        add(buttons[5]);
+        // ========== FULL REPORT ===========
+        buttons[6] = new JButton("Wygeneruj pełny raport");
+        buttons[6].addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                new FullReport(db);
+            }
+        });
+        add(buttons[6]);
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(200,400);
@@ -66,7 +82,7 @@ public class ArtistsMenu extends JFrame {
 
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                ArtistsMenu.super.dispose();
+                ReportsMenu.super.dispose();
             }
 
             @Override

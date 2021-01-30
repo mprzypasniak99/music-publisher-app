@@ -66,7 +66,7 @@ public class AddEmployee extends JFrame {
         add(jb);
         add(cb);
         setLayout(null);
-        setSize(250, 500);
+        setSize(280, 530);
         setLocationRelativeTo(null);
         setVisible(true);
     }
