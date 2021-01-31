@@ -37,7 +37,7 @@ public class ReportsMenu extends JFrame {
         });
         add(buttons[2]);
         // ========== CONCERT REPORT =============
-        buttons[3] = new JButton("Wygeneruj raport sprzedaży albumów");
+        buttons[3] = new JButton("Wygeneruj raport zysków z koncertów");
         buttons[3].addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 new ConcertReport(db);

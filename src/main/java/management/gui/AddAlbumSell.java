@@ -59,10 +59,11 @@ public class AddAlbumSell extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(ftf3.getValue() != null) {
                     StorageMediumContainer tmp = new StorageMediumContainer(tf.getText(), (Double) ftf3.getValue());
-                    db.addStorageMedium(tf.getText(), (Double) ftf3.getValue());
-                    dflms.addElement(tmp);
-                    //jl2.setModel(dflms);
-                    jl2.setSelectedValue(tmp, true);
+                    if(db.addStorageMedium(tf.getText(), (Double) ftf3.getValue())) {
+                        dflms.addElement(tmp);
+                        //jl2.setModel(dflms);
+                        jl2.setSelectedValue(tmp, true);
+                    }
                 } else {
                     new MessageWindow("Brak wartości", "Dodaj wszystkie wymagane wartości przed dodaniem nośnika");
                 }
@@ -72,9 +73,10 @@ public class AddAlbumSell extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1 && jl2.getSelectedIndex() != -1) {
-                    db.addAlbumSell(jl.getSelectedValue().getId_albumu(), (Double) ftf.getValue(), (Long) ftf2.getValue(), jl2.getSelectedValue().getTyp());
-                    new MessageWindow("Dodano", "Dodano sprzedaż dla albumu");
-                    AddAlbumSell.super.dispose();
+                    if(db.addAlbumSell(jl.getSelectedValue().getId_albumu(), (Double) ftf.getValue(), (Long) ftf2.getValue(), jl2.getSelectedValue().getTyp())) {
+                        new MessageWindow("Dodano", "Dodano sprzedaż dla albumu");
+                        AddAlbumSell.super.dispose();
+                    }
                 } else {
                     new MessageWindow("Wybierz album i typ nośnika", "Wybierz album i typ nośnika zanim spróbujesz dodać sprzedaż");
                 }
@@ -84,8 +86,9 @@ public class AddAlbumSell extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl2.getSelectedIndex() != -1) {
-                    db.editPrice(jl2.getSelectedValue().getTyp(), jl2.getSelectedValue().getCena());
-                    dflms.setElementAt(new StorageMediumContainer(jl2.getSelectedValue().getTyp(), jl2.getSelectedValue().getCena()), jl.getSelectedIndex());
+                    if(db.editPrice(jl2.getSelectedValue().getTyp(), jl2.getSelectedValue().getCena())) {
+                        dflms.setElementAt(new StorageMediumContainer(jl2.getSelectedValue().getTyp(), jl2.getSelectedValue().getCena()), jl.getSelectedIndex());
+                    }
                 } else {
                     new MessageWindow("Wybierz nośnik", "Wybierz nośnik, którego cenę chcesz zmodyfikować");
                 }

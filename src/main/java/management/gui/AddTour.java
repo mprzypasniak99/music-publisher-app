@@ -36,9 +36,10 @@ public class AddTour extends JFrame {
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.addTour(tf.getText(), new Date(((java.util.Date) ftf.getValue()).getTime()), new Date(((java.util.Date) ftf2.getValue()).getTime()), vcc_add);
-                new MessageWindow("Dodano", "Dodałeś nową trasę");
-                AddTour.super.dispose();
+                if(db.addTour(tf.getText(), new Date(((java.util.Date) ftf.getValue()).getTime()), new Date(((java.util.Date) ftf2.getValue()).getTime()), vcc_add)) {
+                    new MessageWindow("Dodano", "Dodałeś nową trasę");
+                    AddTour.super.dispose();
+                }
             }
         });
         jb2.addActionListener(new ActionListener() {

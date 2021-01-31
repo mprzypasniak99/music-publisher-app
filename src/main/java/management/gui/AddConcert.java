@@ -34,12 +34,15 @@ public class AddConcert extends JFrame {
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                boolean check;
                 if(ftf2.getValue() != null) {
-                    db.addConcert(new Date(((java.util.Date) ftf.getValue()).getTime()), tf.getText(), tf2.getText(), tf3.getText(), (Double) ftf2.getValue());
+                    check = db.addConcert(new Date(((java.util.Date) ftf.getValue()).getTime()), tf.getText(), tf2.getText(), tf3.getText(), (Double) ftf2.getValue());
                 } else {
-                    db.addConcert(new Date(((java.util.Date) ftf.getValue()).getTime()), tf.getText(), tf2.getText(), tf3.getText());
+                    check = db.addConcert(new Date(((java.util.Date) ftf.getValue()).getTime()), tf.getText(), tf2.getText(), tf3.getText());
                 }
-                AddConcert.super.dispose();
+                if(check) {
+                    AddConcert.super.dispose();
+                }
             }
         });
         l.setBounds(15, 10, 100, 30);

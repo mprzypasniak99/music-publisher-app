@@ -57,9 +57,10 @@ public class EditAlbumSell extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1) {
-                    db.editPrice(tf2.getText(), (Double) ftf3.getValue());
-                    db.commit();
-                    new MessageWindow("Zmieniono", "Udało Ci się zmienić cenę nośnika");
+                    if(db.editPrice(tf2.getText(), (Double) ftf3.getValue())) {
+                        db.commit();
+                        new MessageWindow("Zmieniono", "Udało Ci się zmienić cenę nośnika");
+                    }
                 } else {
                     new MessageWindow("Wybierz sprzedaż", "Wybierz sprzedaż na podstawie której zedytujesz cenę nośnika");
                 }
@@ -69,8 +70,9 @@ public class EditAlbumSell extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1) {
-                    db.editAlbumSell(jl.getSelectedValue().getId_albumu(), (Double) ftf.getValue(), (Long) ftf2.getValue(), tf2.getText());
-                    new MessageWindow("Zmieniono", "Udało Ci się zmodyfikować sprzedaż");
+                    if(db.editAlbumSell(jl.getSelectedValue().getId_albumu(), (Double) ftf.getValue(), (Long) ftf2.getValue(), tf2.getText())) {
+                        new MessageWindow("Zmieniono", "Udało Ci się zmodyfikować sprzedaż");
+                    }
                 } else {
                     new MessageWindow("Wybierz sprzedaż", "Wybierz sprzedaż, którą chcesz edytować");
                 }

@@ -46,8 +46,9 @@ public class EditConcertPerformers extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl3.getSelectedIndex() != -1) {
-                    db.addConPerformer(jl3.getSelectedValue().getId(), tmp_id_koncertu);
-                    dfla.addElement(jl3.getSelectedValue());
+                    if(db.addConPerformer(jl3.getSelectedValue().getId(), tmp_id_koncertu)) {
+                        dfla.addElement(jl3.getSelectedValue());
+                    }
                 } else {
                     new MessageWindow("Wybierz artystę!", "Wybierz artystę, którego chciałbyś dodać do koncertu");
                 }
@@ -58,8 +59,9 @@ public class EditConcertPerformers extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl2.getSelectedIndex() != -1) {
-                    db.deleteConPerformer(jl3.getSelectedValue().getId(), tmp_id_koncertu);
-                    dfla.removeElement(jl2.getSelectedValue());
+                    if(db.deleteConPerformer(jl3.getSelectedValue().getId(), tmp_id_koncertu)) {
+                        dfla.removeElement(jl2.getSelectedValue());
+                    }
                 } else {
                     new MessageWindow("Nie wybrano artysty", "Wybierz artystę, którego chcesz usunąć z koncertu");
                 }
@@ -69,9 +71,10 @@ public class EditConcertPerformers extends JFrame {
         jb3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.commit();
-                new MessageWindow("Zatwierdzone", "Pomyślnie dokonano zmian w członkach zespołu");
-                EditConcertPerformers.super.dispose();
+                if(db.commit()) {
+                    new MessageWindow("Zatwierdzone", "Pomyślnie dokonano zmian w członkach zespołu");
+                    EditConcertPerformers.super.dispose();
+                }
             }
         });
 

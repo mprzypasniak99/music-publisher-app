@@ -62,9 +62,10 @@ public class AddArtist extends JFrame{
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.addAuthor(tf1.getText(), tf2.getText(), tf3.getText());
-                new MessageWindow("Dodano!", "Dodałeś nowego artystę");
-                AddArtist.super.dispose();
+                if(db.addAuthor(tf1.getText(), tf2.getText(), tf3.getText())) {
+                    new MessageWindow("Dodano!", "Dodałeś nowego artystę");
+                    AddArtist.super.dispose();
+                }
             }
         });
         l1.setBounds(15, 10, 50, 30);
@@ -135,9 +136,10 @@ public class AddArtist extends JFrame{
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.addAuthor(tf1.getText(), ata);
-                new MessageWindow("Dodano!", "Dodałeś nowy zespół");
-                AddArtist.super.dispose();
+                if(db.addAuthor(tf1.getText(), ata)) {
+                    new MessageWindow("Dodano!", "Dodałeś nowy zespół");
+                    AddArtist.super.dispose();
+                }
             }
         });
         l1.setBounds(15, 10, 50, 30);

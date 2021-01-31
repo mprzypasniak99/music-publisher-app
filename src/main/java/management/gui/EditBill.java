@@ -57,8 +57,9 @@ public class EditBill extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1) {
-                    db.editBill(tmp_id, new Date(((java.util.Date)ftf.getValue()).getTime()), new Date(((java.util.Date)ftf2.getValue()).getTime()), (Double)ftf3.getValue());
-                    new MessageWindow("Zmodyfikowano", "Pomyślnie zmodyfikowano rachunek");
+                    if(db.editBill(tmp_id, new Date(((java.util.Date)ftf.getValue()).getTime()), new Date(((java.util.Date)ftf2.getValue()).getTime()), (Double)ftf3.getValue())) {
+                        new MessageWindow("Zmodyfikowano", "Pomyślnie zmodyfikowano rachunek");
+                    }
                 } else {
                     new MessageWindow("Wybierz rachunek", "Wybierz rachunek, który chcesz zmodyfikować");
                 }

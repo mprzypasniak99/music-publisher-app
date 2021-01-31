@@ -43,8 +43,9 @@ public class EditSessionTechnicians extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (jl3.getSelectedIndex() != -1 && jl.getSelectedIndex() != -1) {
-                    db.addSesTech(jl3.getSelectedValue().getId(), jl.getSelectedValue().getData_sesji(), jl.getSelectedValue().getId_autora());
-                    dfla.addElement(jl3.getSelectedValue());
+                    if(db.addSesTech(jl3.getSelectedValue().getId(), jl.getSelectedValue().getData_sesji(), jl.getSelectedValue().getId_autora())) {
+                        dfla.addElement(jl3.getSelectedValue());
+                    }
                 } else {
                     new MessageWindow("Wybierz pola", "Wybierz koncert i artystę, którego chciałbyś dodać do tego koncertu");
                 }
@@ -55,8 +56,9 @@ public class EditSessionTechnicians extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (jl2.getSelectedIndex() != -1) {
-                    db.deleteSesTech(jl3.getSelectedValue().getId(), jl.getSelectedValue().getData_sesji(), jl.getSelectedValue().getId_autora());
-                    dfla.removeElement(jl2.getSelectedValue());
+                    if(db.deleteSesTech(jl3.getSelectedValue().getId(), jl.getSelectedValue().getData_sesji(), jl.getSelectedValue().getId_autora())) {
+                        dfla.removeElement(jl2.getSelectedValue());
+                    }
                 } else {
                     new MessageWindow("Nie wybrano pracownika", "Wybierz pracownika, którego chcesz usunąć z koncertu");
                 }
@@ -66,9 +68,10 @@ public class EditSessionTechnicians extends JFrame {
         jb3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.commit();
-                new MessageWindow("Zatwierdzone", "Pomyślnie dokonano zmian w członkach zespołu");
-                EditSessionTechnicians.super.dispose();
+                if(db.commit()) {
+                    new MessageWindow("Zatwierdzone", "Pomyślnie dokonano zmian w członkach zespołu");
+                    EditSessionTechnicians.super.dispose();
+                }
             }
         });
 

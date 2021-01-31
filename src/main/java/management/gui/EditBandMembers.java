@@ -45,8 +45,9 @@ public class EditBandMembers extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl3.getSelectedIndex() != -1) {
-                    db.addBandMember(tmp_id_zespolu, jl3.getSelectedValue().getId());
-                    dfla.addElement(jl3.getSelectedValue());
+                    if(db.addBandMember(tmp_id_zespolu, jl3.getSelectedValue().getId())) {
+                        dfla.addElement(jl3.getSelectedValue());
+                    }
                 } else {
                     new MessageWindow("Wybierz artystę!", "Wybierz artystę, którego chciałbyś dodać do zespołu");
                 }
@@ -57,8 +58,9 @@ public class EditBandMembers extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl2.getSelectedIndex() != -1) {
-                    db.deleteBandMember(tmp_id_zespolu, jl2.getSelectedValue().getId());
-                    dfla.removeElement(jl2.getSelectedValue());
+                    if(db.deleteBandMember(tmp_id_zespolu, jl2.getSelectedValue().getId())) {
+                        dfla.removeElement(jl2.getSelectedValue());
+                    }
                 } else {
                     new MessageWindow("Nie wybrano artysty", "Wybierz artystę, którego chcesz usunąć z zespołu");
                 }
@@ -68,9 +70,10 @@ public class EditBandMembers extends JFrame {
         jb3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.commit();
-                new MessageWindow("Zatwierdzone", "Pomyślnie dokonano zmian w członkach zespołu");
-                EditBandMembers.super.dispose();
+                if(db.commit()) {
+                    new MessageWindow("Zatwierdzone", "Pomyślnie dokonano zmian w członkach zespołu");
+                    EditBandMembers.super.dispose();
+                }
             }
         });
 

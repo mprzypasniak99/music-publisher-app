@@ -37,14 +37,16 @@ public class AddEmployee extends JFrame {
                 if(cb.getSelectedIndex() != -1) {
                     String etat = (String) cb.getSelectedItem();
                     if (etat.equals("INNY")) {
-                        db.addEmployee(tf1.getText(), tf2.getText(), tf3.getText());
-                        new MessageWindow("Dodano!", "Dodano nowego pracownika");
-                        AddEmployee.super.dispose();
+                        if(db.addEmployee(tf1.getText(), tf2.getText(), tf3.getText())) {
+                            new MessageWindow("Dodano!", "Dodano nowego pracownika");
+                            AddEmployee.super.dispose();
+                        }
                     }
                     else {
-                        db.addEmployee(tf1.getText(), tf2.getText(), etat);
-                        new MessageWindow("Dodano!", "Dodano nowego pracownika");
-                        AddEmployee.super.dispose();
+                        if(db.addEmployee(tf1.getText(), tf2.getText(), etat)) {
+                            new MessageWindow("Dodano!", "Dodano nowego pracownika");
+                            AddEmployee.super.dispose();
+                        }
                     }
                 } else {
                     new MessageWindow("Brak etatu!", "Wybierz etat dla tworzonego pracownika");

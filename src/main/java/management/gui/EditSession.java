@@ -52,9 +52,10 @@ public class EditSession extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1 && jl2.getSelectedIndex() != -1 && jl3.getSelectedIndex() != -1) {
-                    db.editSession(jl.getSelectedValue().getId(), tmp_id_autora, new Date(((java.util.Date) ftf.getValue()).getTime()), tmp_date, jl2.getSelectedValue().getId());
-                    new MessageWindow("Zmdyfikowano", "Pomyślnie zmodyfikowano sesję nagraniową");
-                    EditSession.super.dispose();
+                    if(db.editSession(jl.getSelectedValue().getId(), tmp_id_autora, new Date(((java.util.Date) ftf.getValue()).getTime()), tmp_date, jl2.getSelectedValue().getId())) {
+                        new MessageWindow("Zmdyfikowano", "Pomyślnie zmodyfikowano sesję nagraniową");
+                        EditSession.super.dispose();
+                    }
                 } else {
                     new MessageWindow("Nie wybrano elementów", "Przed dodaniem wybierz sesję, studio i artystę do modyfikacji");
                 }

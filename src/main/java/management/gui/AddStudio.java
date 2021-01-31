@@ -25,9 +25,10 @@ public class AddStudio extends JFrame {
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.addStudio(tf1.getText(), tf2.getText(), tf3.getText());
-                new MessageWindow("Dodano", "Pomyślnie dodano studio");
-                AddStudio.super.dispose();
+                if(db.addStudio(tf1.getText(), tf2.getText(), tf3.getText())) {
+                    new MessageWindow("Dodano", "Pomyślnie dodano studio");
+                    AddStudio.super.dispose();
+                }
             }
         });
         add(l1);

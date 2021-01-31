@@ -40,9 +40,10 @@ public class AddSession extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1 && jl2.getSelectedIndex() != -1) {
-                    db.addSession(jl.getSelectedValue().getId(), new Date(((java.util.Date) ftf.getValue()).getTime()), jl2.getSelectedValue().getId());
-                    new MessageWindow("Dodano", "Pomyślnie dodano sesję nagraniową");
-                    AddSession.super.dispose();
+                    if(db.addSession(jl.getSelectedValue().getId(), new Date(((java.util.Date) ftf.getValue()).getTime()), jl2.getSelectedValue().getId())) {
+                        new MessageWindow("Dodano", "Pomyślnie dodano sesję nagraniową");
+                        AddSession.super.dispose();
+                    }
                 } else {
                     new MessageWindow("Nie wybrano elementów", "Przed dodaniem wybierz studio i artystę, dla którego chcesz dodać sesję");
                 }

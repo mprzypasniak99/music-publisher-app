@@ -38,9 +38,10 @@ public class EditStudio extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1) {
-                    db.editStudio(jl.getSelectedValue().getId(), tf1.getText(), tf2.getText(), tf3.getText());
-                    new MessageWindow("Zrobione", "Zmodyfikowano studio");
-                    EditStudio.super.dispose();
+                    if(db.editStudio(jl.getSelectedValue().getId(), tf1.getText(), tf2.getText(), tf3.getText())) {
+                        new MessageWindow("Zrobione", "Zmodyfikowano studio");
+                        EditStudio.super.dispose();
+                    }
                 } else {
                     new MessageWindow("Nie wybrano sstudia", "Najpierw wybierz z listy studio, które chcesz edytować");
                 }

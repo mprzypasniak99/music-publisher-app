@@ -53,9 +53,10 @@ public class AddBill extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1) {
-                    db.addBill(jl.getSelectedValue().getId(), new Date(((java.util.Date)ftf.getValue()).getTime()), new Date(((java.util.Date)ftf2.getValue()).getTime()), (Double)ftf3.getValue());
-                    new MessageWindow("Dodano", "Pomyślnie dodano nowy rachunek");
-                    AddBill.super.dispose();
+                    if(db.addBill(jl.getSelectedValue().getId(), new Date(((java.util.Date)ftf.getValue()).getTime()), new Date(((java.util.Date)ftf2.getValue()).getTime()), (Double)ftf3.getValue())) {
+                        new MessageWindow("Dodano", "Pomyślnie dodano nowy rachunek");
+                        AddBill.super.dispose();
+                    }
                 } else {
                     new MessageWindow("Wybierz pracownika", "Wybierz pracownika, dla którego chcesz dodać rachunek");
                 }

@@ -48,8 +48,9 @@ public class EditConcert extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1) {
-                    db.editConcert(tmp_id, new Date(((java.util.Date) ftf.getValue()).getTime()), tf.getText(), tf2.getText(), tf3.getText(), (Double) ftf2.getValue());
-                    EditConcert.super.dispose();
+                    if(db.editConcert(tmp_id, new Date(((java.util.Date) ftf.getValue()).getTime()), tf.getText(), tf2.getText(), tf3.getText(), (Double) ftf2.getValue())) {
+                        EditConcert.super.dispose();
+                    }
                 } else {
                     new MessageWindow("Wybierz koncert", "Wybierz koncert, który chcesz zmodyfikować");
                 }

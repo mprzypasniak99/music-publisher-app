@@ -72,9 +72,10 @@ public class AddContract extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1 && jl2.getSelectedIndex() != -1) {
-                    db.addContract(tmp_id_au, tmp_id_me, new Date(((java.util.Date)ftf.getValue()).getTime()), new Date(((java.util.Date)ftf2.getValue()).getTime()), (Double)ftf3.getValue());
-                    new MessageWindow("Dodano kontrakt", "Dodano nowy kontrakt");
-                    AddContract.super.dispose();
+                    if(db.addContract(tmp_id_au, tmp_id_me, new Date(((java.util.Date)ftf.getValue()).getTime()), new Date(((java.util.Date)ftf2.getValue()).getTime()), (Double)ftf3.getValue())) {
+                        new MessageWindow("Dodano kontrakt", "Dodano nowy kontrakt");
+                        AddContract.super.dispose();
+                    }
                 } else {
                     new MessageWindow("Błąd", "Nie wybrano autora lub menedżera");
                 }

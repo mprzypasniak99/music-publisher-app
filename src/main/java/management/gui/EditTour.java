@@ -48,9 +48,10 @@ public class EditTour extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1) {
-                    db.editTour(jl.getSelectedValue().getId_trasy(), jl.getSelectedValue().getNazwa(), jl.getSelectedValue().getData_rozp(), jl.getSelectedValue().getData_zak());
-                    new MessageWindow("Zrobione", "Pomyślnie zmodyfikowano trasę");
-                    EditTour.super.dispose();
+                    if(db.editTour(jl.getSelectedValue().getId_trasy(), jl.getSelectedValue().getNazwa(), jl.getSelectedValue().getData_rozp(), jl.getSelectedValue().getData_zak())) {
+                        new MessageWindow("Zrobione", "Pomyślnie zmodyfikowano trasę");
+                        EditTour.super.dispose();
+                    }
                 }
             }
         });
@@ -58,8 +59,9 @@ public class EditTour extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1 && jl2.getSelectedIndex() != -1) {
-                    dflc.addElement(jl2.getSelectedValue());
-                    db.addConToTour(jl.getSelectedValue().getId_trasy(), jl2.getSelectedValue().getId());
+                    if(db.addConToTour(jl.getSelectedValue().getId_trasy(), jl2.getSelectedValue().getId())) {
+                        dflc.addElement(jl2.getSelectedValue());
+                    }
                 } else {
                     new MessageWindow("Wybierz trasę i koncert", "Nie wybrano trasy lub koncertu");
                 }
@@ -69,8 +71,9 @@ public class EditTour extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1 && jl3.getSelectedIndex() != -1) {
-                    dflc.removeElement(jl3.getSelectedValue());
-                    db.deleteConFromTour(jl2.getSelectedValue().getId());
+                    if(db.deleteConFromTour(jl2.getSelectedValue().getId())) {
+                        dflc.removeElement(jl3.getSelectedValue());
+                    }
                 } else {
                     new MessageWindow("Wybierz trasę i koncert", "Nie wybrano trasy lub koncertu");
                 }

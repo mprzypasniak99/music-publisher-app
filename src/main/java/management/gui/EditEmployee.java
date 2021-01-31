@@ -51,14 +51,16 @@ public class EditEmployee extends JFrame {
                 if(cb.getSelectedIndex() != -1) {
                     String etat = (String) cb.getSelectedItem();
                     if (etat.equals("INNY")) {
-                        db.editEmployee(tmp_id, tf1.getText(), tf2.getText(), tf3.getText(), old_etat);
-                        new MessageWindow("Zrobione!", "Zmodyfikowano pracownika");
-                        EditEmployee.super.dispose();
+                        if(db.editEmployee(tmp_id, tf1.getText(), tf2.getText(), tf3.getText(), old_etat)) {
+                            new MessageWindow("Zrobione!", "Zmodyfikowano pracownika");
+                            EditEmployee.super.dispose();
+                        }
                     }
                     else {
-                        db.editEmployee(tmp_id, tf1.getText(), tf2.getText(), etat, old_etat);
-                        new MessageWindow("Zrobione!", "Zmodyfikowano pracownika");
-                        EditEmployee.super.dispose();
+                        if(db.editEmployee(tmp_id, tf1.getText(), tf2.getText(), etat, old_etat)) {
+                            new MessageWindow("Zrobione!", "Zmodyfikowano pracownika");
+                            EditEmployee.super.dispose();
+                        }
                     }
                 } else {
                     new MessageWindow("Brak etatu!", "Wybierz etat dla tworzonego pracownika");

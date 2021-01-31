@@ -58,9 +58,10 @@ public class EditContract extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1) {
-                    db.editContract(tmp_id, new Date(((java.util.Date)ftf.getValue()).getTime()), new Date(((java.util.Date)ftf2.getValue()).getTime()), (Double)ftf3.getValue());
-                    new MessageWindow("Zrobione", "Zmodyfikowano kontrakt");
-                    EditContract.super.dispose();
+                    if(db.editContract(tmp_id, new Date(((java.util.Date)ftf.getValue()).getTime()), new Date(((java.util.Date)ftf2.getValue()).getTime()), (Double)ftf3.getValue())) {
+                        new MessageWindow("Zrobione", "Zmodyfikowano kontrakt");
+                        EditContract.super.dispose();
+                    }
                 } else {
                     new MessageWindow("Błąd", "Nie wybrano autora lub menedżera");
                 }

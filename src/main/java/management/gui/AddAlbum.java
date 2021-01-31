@@ -46,9 +46,10 @@ public class AddAlbum extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl.getSelectedIndex() != -1) {
-                    db.addAlbum(jl.getSelectedValue().getId(), tf1.getText(), tf2.getText(), vsc);
-                    new MessageWindow("Dodano!", "Dodałeś nowy album");
-                    AddAlbum.super.dispose();
+                    if(db.addAlbum(jl.getSelectedValue().getId(), tf1.getText(), tf2.getText(), vsc)) {
+                        new MessageWindow("Dodano!", "Dodałeś nowy album");
+                        AddAlbum.super.dispose();
+                    }
                 }
                 else {
                     new MessageWindow("Wybierz artystę", "Wybierz artystę, dla którego chcesz dodać album.");

@@ -85,9 +85,10 @@ public class EditArtist extends JFrame {
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.editAuthor(tmpId, tf1.getText(), tf2.getText(), tf3.getText());
-                new MessageWindow("Zrobione!", "Zmodyfikowałeś artystę");
-                EditArtist.super.dispose();
+                if(db.editAuthor(tmpId, tf1.getText(), tf2.getText(), tf3.getText())) {
+                    new MessageWindow("Zrobione!", "Zmodyfikowałeś artystę");
+                    EditArtist.super.dispose();
+                }
             }
         });
         l1.setBounds(15, 525, 50, 30);
@@ -135,9 +136,10 @@ public class EditArtist extends JFrame {
         jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.editAuthor(tmpId, tf1.getText());
-                new MessageWindow("Zrobione!", "Zmodyfikowałeś zespół");
-                EditArtist.super.dispose();
+                if(db.editAuthor(tmpId, tf1.getText())) {
+                    new MessageWindow("Zrobione!", "Zmodyfikowałeś zespół");
+                    EditArtist.super.dispose();
+                }
             }
         });
         l1.setBounds(15, 525, 50, 30);

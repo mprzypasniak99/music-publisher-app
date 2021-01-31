@@ -47,9 +47,10 @@ public class EditAlbum extends JFrame {
                 if(jl.getSelectedIndex() == -1) {
                     new MessageWindow("Błąd", "Nie wybrano żadnego albumu");
                 } else {
-                    db.editAlbum(tmp_id_albumu, tf1.getText(), tf2.getText());
-                    new MessageWindow("Zrobione!", "Zmodyfikowałeś album");
-                    EditAlbum.super.dispose();
+                    if(db.editAlbum(tmp_id_albumu, tf1.getText(), tf2.getText())) {
+                        new MessageWindow("Zrobione!", "Zmodyfikowałeś album");
+                        EditAlbum.super.dispose();
+                    }
                 }
             }
         });
@@ -74,18 +75,20 @@ public class EditAlbum extends JFrame {
         jb2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                db.addSong(tmp_id_albumu, new SongContainer(tf3.getText(), (Integer)sm1.getValue(), (Integer)sm2.getValue()));
-                vsc.add(new SongContainer(tf3.getText(), (Integer)sm1.getValue(), (Integer)sm2.getValue()));
-                jl2.setListData(vsc);
+                if(db.addSong(tmp_id_albumu, new SongContainer(tf3.getText(), (Integer)sm1.getValue(), (Integer)sm2.getValue()))) {
+                    vsc.add(new SongContainer(tf3.getText(), (Integer) sm1.getValue(), (Integer) sm2.getValue()));
+                    jl2.setListData(vsc);
+                }
             }
         });
         jb3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jl2.getSelectedIndex() != -1) {
-                    db.deleteSong(tmp_id_albumu, jl2.getSelectedValue().getNazwa());
-                    vsc.remove(jl2.getSelectedValue());
-                    jl2.setListData(vsc);
+                    if(db.deleteSong(tmp_id_albumu, jl2.getSelectedValue().getNazwa())) {
+                        vsc.remove(jl2.getSelectedValue());
+                        jl2.setListData(vsc);
+                    }
                 } else {
                     new MessageWindow("Nie wybrano utworu", "Wybierz utwór, który chciałbyś usunąć z listy utworów");
                 }
