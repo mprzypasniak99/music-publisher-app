@@ -21,7 +21,7 @@ public class SellReport extends JFrame {
         for(int i = 0; i < vac.size(); i++) {
             data[i][0] = vac.get(i).toString();
             Double tmp = db.getSellReportForAlbum(vac.get(i).getId_albumu());
-            data[i][1] = String.format("%.2f", tmp);//tmp.toString();
+            data[i][1] = String.format("%.2f", tmp);
             sum += tmp;
         }
         JTable jt = new JTable(data, columns){

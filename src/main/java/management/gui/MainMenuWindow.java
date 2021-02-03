@@ -50,6 +50,15 @@ public class MainMenuWindow extends JFrame {
                 new ReportsMenu(db);
             }
         });
+
+        JButton search = new JButton("Przegląd danych");
+        search.setBounds(0,80,150,20);
+        search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new DataViewer(db);
+            }
+        });
         setSize(800, 600);
 
         setLocationRelativeTo(null);
@@ -83,6 +92,7 @@ public class MainMenuWindow extends JFrame {
         add(employees);
         add(events);
         add(reports);
+        add(search);
 
         add(concerts);
         add(recordings);
