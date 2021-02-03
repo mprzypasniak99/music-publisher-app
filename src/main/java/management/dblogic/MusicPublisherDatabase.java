@@ -150,6 +150,32 @@ public class MusicPublisherDatabase {
         return ac;
     }
 
+    public Vector<AuthorContainer> getAuthors(boolean band, String fields) {
+
+        Vector<AuthorContainer> ac = new Vector<>();
+        if(band) {
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM inf141302.Zespol " + (fields.equals("") ? "WHERE " + fields : ""))) {
+                while(rs.next()) {
+                    ac.add(new AuthorContainer(rs.getLong(1), rs.getString(2)));
+                }
+            } catch (SQLException ex) {
+                ErrorHandler.handleError(ex.getErrorCode());
+            }
+        }
+        else {
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM inf141302.Artysta " + (fields.equals("") ? "WHERE " + fields : ""))) {
+                while(rs.next()) {
+                    ac.add(new AuthorContainer(rs.getLong(1), rs.getString(4), rs.getString(2), rs.getString(3)));
+                }
+            } catch (SQLException ex) {
+                ErrorHandler.handleError(ex.getErrorCode());
+            }
+        }
+        return ac;
+    }
+
     public Vector<AuthorContainer> getBandMembers(long id_zesp){
         Vector<AuthorContainer> res = new Vector<>();
         try (PreparedStatement stmt = conn.prepareStatement("SELECT id_autora, pseudonim, imie, nazwisko FROM inf141302.czlonek_zespolu JOIN inf141302.artysta ON id_artysty = id_autora WHERE id_zespolu = ?");) {
@@ -318,6 +344,26 @@ public class MusicPublisherDatabase {
         return res;
     }
 
+    public Vector<AlbumContainer> getAlbums(String fields) {
+        String query = "SELECT id_albumu, id_autora, pseudonim, nazwa, gatunek_muzyczny FROM inf141302.Album JOIN";
+
+        Vector<AlbumContainer> res = new Vector<>();
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query + " inf141302.Artysta USING(id_autora) " + (fields.equals("") ? "WHERE " + fields : ""));
+             Statement stmt2 = conn.createStatement();
+             ResultSet rs2 = stmt2.executeQuery(query + " inf141302.Zespol USING(id_autora) " + (fields.equals("") ? "WHERE " + fields : ""));) {
+            while(rs.next()) {
+                res.add(new AlbumContainer(rs.getLong(1), rs.getLong(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+            }
+            while(rs2.next()) {
+                res.add(new AlbumContainer(rs2.getLong(1), rs2.getLong(2), rs2.getString(3), rs2.getString(4), rs2.getString(5)));
+            }
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+        return res;
+    }
+
     public boolean deleteSong(long id_albumu, String nazwa) {
         try(PreparedStatement stmt = conn.prepareStatement("DELETE FROM inf141302.Utwor WHERE id_albumu = ? AND nazwa = ?");) {
             stmt.setLong(1, id_albumu);
@@ -360,6 +406,7 @@ public class MusicPublisherDatabase {
         }
         return ret;
     }
+
     public boolean editAlbum(long id_albumu, String nazwa, String gatunek) {
         try(PreparedStatement stmt = conn.prepareStatement("UPDATE inf141302.Album SET nazwa = ?, gatunek_muzyczny = ? WHERE id_albumu = ?");) {
             stmt.setString(1, nazwa);
@@ -396,6 +443,19 @@ public class MusicPublisherDatabase {
         Vector<EmployeeContainer> ret = new Vector<>();
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM inf141302.Pracownik")) {
+            while(rs.next()) {
+                ret.add(new EmployeeContainer(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+            }
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+        return ret;
+    }
+
+    public Vector<EmployeeContainer> getEmployees(String fields) {
+        Vector<EmployeeContainer> ret = new Vector<>();
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM inf141302.Pracownik " + (fields.equals("") ? "WHERE " + fields : ""))) {
             while(rs.next()) {
                 ret.add(new EmployeeContainer(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4)));
             }
@@ -472,6 +532,20 @@ public class MusicPublisherDatabase {
         return res;
     }
 
+    public Vector<BillContainer> getBills(String fields) {
+        Vector<BillContainer> res = new Vector<>();
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id_rachunku, id_prac, imie, nazwisko, etat, data_rozp, data_zak, kwota FROM inf141302.Rachunek JOIN inf141302.pracownik USING(id_prac) " + (fields.equals("") ? "WHERE " + fields : ""));) {
+            while(rs.next()){
+                EmployeeContainer tmp = new EmployeeContainer(rs.getLong(2), rs.getString(3), rs.getString(4), rs.getString(5));
+                res.add(new BillContainer(rs.getLong(1), tmp.toString(), rs.getDate(6), rs.getDate(7), rs.getDouble(8)));
+            }
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+        return res;
+    }
+
     public boolean editBill(long id_rachunku, Date data_rozp, Date data_zak, double kwota) {
         try(PreparedStatement stmt = conn.prepareStatement("UPDATE inf141302.Rachunek SET data_rozp = ?, data_zak = ?, kwota = ? WHERE id_rachunku = ?");) {
             stmt.setLong(4, id_rachunku);
@@ -526,6 +600,24 @@ public class MusicPublisherDatabase {
             ResultSet rs = stmt.executeQuery("SELECT id_kontraktu, ar.pseudonim, me.imie, me.nazwisko, data_zawarcia, data_wygasniecia, kwota FROM inf141302.Kontrakt JOIN inf141302.Artysta ar USING(id_autora) JOIN inf141302.Pracownik me ON me.id_prac = id_menadzera");
             Statement stmt2 = conn.createStatement();
             ResultSet rs2 = stmt2.executeQuery("SELECT id_kontraktu, nazwa_zespolu, imie, nazwisko, data_zawarcia, data_wygasniecia, kwota FROM inf141302.Kontrakt JOIN inf141302.Zespol USING(id_autora) JOIN inf141302.Pracownik ON id_menadzera = id_prac");) {
+            while(rs.next()) {
+                res.add(new ContractContainer(rs.getLong(1), rs.getString(2), rs.getString(3) + " " + rs.getString(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7)));
+            }
+            while(rs2.next()) {
+                res.add(new ContractContainer(rs2.getLong(1), rs2.getString(2), rs2.getString(3) + " " + rs2.getString(4), rs2.getDate(5), rs2.getDate(6), rs2.getDouble(7)));
+            }
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+        return res;
+    }
+
+    public Vector<ContractContainer> getContracts(String fields) {
+        Vector<ContractContainer> res = new Vector<>();
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id_kontraktu, ar.pseudonim, me.imie, me.nazwisko, data_zawarcia, data_wygasniecia, kwota FROM inf141302.Kontrakt JOIN inf141302.Artysta ar USING(id_autora) JOIN inf141302.Pracownik me ON me.id_prac = id_menadzera " + (fields.equals("") ? "WHERE " + fields : ""));
+            Statement stmt2 = conn.createStatement();
+            ResultSet rs2 = stmt2.executeQuery("SELECT id_kontraktu, nazwa_zespolu, imie, nazwisko, data_zawarcia, data_wygasniecia, kwota FROM inf141302.Kontrakt JOIN inf141302.Zespol USING(id_autora) JOIN inf141302.Pracownik ON id_menadzera = id_prac " + (fields.equals("") ? "WHERE " + fields : ""));) {
             while(rs.next()) {
                 res.add(new ContractContainer(rs.getLong(1), rs.getString(2), rs.getString(3) + " " + rs.getString(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7)));
             }
@@ -594,6 +686,19 @@ public class MusicPublisherDatabase {
         Vector<ConcertContainer> res = new Vector<>();
         try(Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT id_koncertu, data_koncertu, kraj, miasto, ulica, zysk FROM inf141302.Koncert");) {
+            while(rs.next()) {
+                res.add(new ConcertContainer(rs.getLong(1), rs.getDate(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDouble(6)));
+            }
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+        return res;
+    }
+
+    public Vector<ConcertContainer> getConcerts(String fields) {
+        Vector<ConcertContainer> res = new Vector<>();
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id_koncertu, data_koncertu, kraj, miasto, ulica, zysk FROM inf141302.Koncert " + (fields.equals("") ? "WHERE " + fields : ""));) {
             while(rs.next()) {
                 res.add(new ConcertContainer(rs.getLong(1), rs.getDate(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDouble(6)));
             }
@@ -729,6 +834,19 @@ public class MusicPublisherDatabase {
         return res;
     }
 
+    public Vector<TourContainer> getTours(String fields) {
+        Vector<TourContainer> res = new Vector<>();
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM inf141302.Trasa " + (fields.equals("") ? "WHERE " + fields : ""));) {
+            while(rs.next()) {
+                res.add(new TourContainer(rs.getLong(1), rs.getString(2), rs.getDate(3), rs.getDate(4)));
+            }
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+        return res;
+    }
+
     public Vector<ConcertContainer> getTourConcerts(long id) {
         Vector<ConcertContainer> res = new Vector<>();
         try(PreparedStatement stmt = conn.prepareStatement("SELECT id_koncertu, data_koncertu, kraj, miasto, ulica, zysk FROM inf141302.Koncert WHERE id_trasy = ?");) {
@@ -816,6 +934,19 @@ public class MusicPublisherDatabase {
         return res;
     }
 
+    public Vector<StudioContainer> getStudios(String fields) {
+        Vector<StudioContainer> res = new Vector<>();
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM inf141302.Studio " + (fields.equals("") ? "WHERE " + fields : ""));) {
+            while(rs.next()) {
+                res.add(new StudioContainer(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+            }
+        }  catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+        return res;
+    }
+
     public boolean editStudio(long id, String kraj, String miasto, String ulica) {
         try(PreparedStatement stmt = conn.prepareStatement("UPDATE inf141302.Studio SET kraj = ?, miasto = ?, ulica = ? WHERE id_studia = ?");) {
             stmt.setString(1, kraj);
@@ -855,6 +986,24 @@ public class MusicPublisherDatabase {
             ResultSet rs = stmt.executeQuery("SELECT id_autora, pseudonim, data_sesji, id_studia, kraj, miasto, ulica FROM inf141302.Artysta JOIN inf141302.Sesja_nagraniowa USING(id_autora) JOIN inf141302.Studio USING(id_studia)");
             Statement stmt2 = conn.createStatement();
             ResultSet rs2 = stmt2.executeQuery("SELECT id_autora, nazwa_zespolu, data_sesji, id_studia, kraj, miasto, ulica FROM inf141302.Zespol JOIN inf141302.Sesja_nagraniowa USING(id_autora) JOIN inf141302.Studio USING(id_studia)");) {
+            while(rs.next()) {
+                res.add(new SessionContainer(rs.getLong(1), rs.getString(2), rs.getDate(3), rs.getLong(4), rs.getString(5), rs.getString(6), rs.getString(7)));
+            }
+            while(rs2.next()) {
+                res.add(new SessionContainer(rs2.getLong(1), rs2.getString(2), rs2.getDate(3), rs2.getLong(4), rs2.getString(5), rs2.getString(6), rs2.getString(7)));
+            }
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+        return res;
+    }
+
+    public Vector<SessionContainer> getSessions(String fields) {
+        Vector<SessionContainer> res = new Vector<>();
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id_autora, pseudonim, data_sesji, id_studia, kraj, miasto, ulica FROM inf141302.Artysta JOIN inf141302.Sesja_nagraniowa USING(id_autora) JOIN inf141302.Studio USING(id_studia) " + (fields.equals("") ? "WHERE " + fields : ""));
+            Statement stmt2 = conn.createStatement();
+            ResultSet rs2 = stmt2.executeQuery("SELECT id_autora, nazwa_zespolu, data_sesji, id_studia, kraj, miasto, ulica FROM inf141302.Zespol JOIN inf141302.Sesja_nagraniowa USING(id_autora) JOIN inf141302.Studio USING(id_studia) " + (fields.equals("") ? "WHERE " + fields : ""));) {
             while(rs.next()) {
                 res.add(new SessionContainer(rs.getLong(1), rs.getString(2), rs.getDate(3), rs.getLong(4), rs.getString(5), rs.getString(6), rs.getString(7)));
             }
@@ -1066,6 +1215,19 @@ public class MusicPublisherDatabase {
         Vector<SellContainer> res = new Vector<>();
         try(Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT id_albumu, nazwa, cena_za_sztuke, ilosc_sprzedanych, typ, cena_nosnika FROM inf141302.Album JOIN inf141302.Sprzedaz USING(id_albumu) JOIN inf141302.Nosnik USING(typ)");) {
+            while(rs.next()) {
+                res.add(new SellContainer(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getLong(4), rs.getString(5), rs.getDouble(6)));
+            }
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+        return res;
+    }
+
+    public Vector<SellContainer> getSells(String fields) {
+        Vector<SellContainer> res = new Vector<>();
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id_albumu, nazwa, cena_za_sztuke, ilosc_sprzedanych, typ, cena_nosnika FROM inf141302.Album JOIN inf141302.Sprzedaz USING(id_albumu) JOIN inf141302.Nosnik USING(typ) " + (fields.equals("") ? "WHERE " + fields : ""));) {
             while(rs.next()) {
                 res.add(new SellContainer(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getLong(4), rs.getString(5), rs.getDouble(6)));
             }
