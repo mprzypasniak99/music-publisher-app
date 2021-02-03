@@ -1,5 +1,6 @@
 package management.gui;
 
+import containers.StudioContainer;
 import management.dblogic.MusicPublisherDatabase;
 
 import javax.swing.*;
