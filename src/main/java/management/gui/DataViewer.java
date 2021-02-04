@@ -524,6 +524,8 @@ public class DataViewer extends JFrame {
                     if(js != null) remove(js);
                     js = new JScrollPane(jt);
                     js.setBounds(320, 10, 500, 500);
+                    jb2.setText("Wyświetl członków");
+                    add(jb2);
                     add(js);
                     repaint();
                 } else if (jcb.getSelectedIndex() == 3) {
@@ -615,11 +617,15 @@ public class DataViewer extends JFrame {
                     if(js != null) remove(js);
                     js = new JScrollPane(jt);
                     js.setBounds(320, 10, 500, 500);
+                    jb2.setText("Wyświetl wykonawców");
+                    add(jb2);
+                    jb3.setText("Wyświetl obsługę");
+                    add(jb3);
                     add(js);
                     repaint();
                 } else if (jcb.getSelectedIndex() == 7) {
                     vtc = db.getTours(whereTour());
-                    String[] columns = {"Nazwa", "Data rozp.", "Data zak.", "Rozpoczęty"};
+                    String[] columns = {"Nazwa", "Data rozp.", "Data zak.", "Rozpoczęta"};
                     String[][] data = new String[vtc.size()][4];
                     for(int i = 0; i < vtc.size(); i++) {
                         data[i][0] = vtc.get(i).getNazwa();
@@ -637,6 +643,8 @@ public class DataViewer extends JFrame {
                     if(js != null) remove(js);
                     js = new JScrollPane(jt);
                     js.setBounds(320, 10, 500, 500);
+                    jb2.setText("Wyświetl koncerty");
+                    add(jb2);
                     add(js);
                     repaint();
                 } else if (jcb.getSelectedIndex() == 8) {
@@ -669,6 +677,8 @@ public class DataViewer extends JFrame {
                     if(js != null) remove(js);
                     js = new JScrollPane(jt);
                     js.setBounds(320, 10, 500, 500);
+                    jb2.setText("Wyświetl obsługę");
+                    add(jb2);
                     add(js);
                     repaint();
                 } else if (jcb.getSelectedIndex() == 9) {
@@ -708,7 +718,50 @@ public class DataViewer extends JFrame {
                         jf.setLocationRelativeTo(null);
                         jf.setSize(250, 500);
                         jf.setVisible(true);
+                    } else if (jcb.getSelectedIndex() == 2) {
+                        JFrame jf = new JFrame("Członkowie");
+                        JList<AuthorContainer> jl = new JList<>(db.getBandMembers(vauc.get(jt.getSelectedRow()).getId()));
+                        jf.getContentPane().add(new JScrollPane(jl));
+                        jf.setLocationRelativeTo(null);
+                        jf.setSize(250, 500);
+                        jf.setVisible(true);
+                    } else if (jcb.getSelectedIndex() == 6) {
+                        JFrame jf = new JFrame("Wykonawcy");
+                        JList<AuthorContainer> jl = new JList<>(db.getConPerformers(vcoc.get(jt.getSelectedRow()).getId()));
+                        jf.getContentPane().add(new JScrollPane(jl));
+                        jf.setLocationRelativeTo(null);
+                        jf.setSize(250, 500);
+                        jf.setVisible(true);
+                    } else if (jcb.getSelectedIndex() == 7) {
+                        JFrame jf = new JFrame("Koncerty");
+                        JList<ConcertContainer> jl = new JList<>(db.getTourConcerts(vtc.get(jt.getSelectedRow()).getId_trasy()));
+                        jf.getContentPane().add(new JScrollPane(jl));
+                        jf.setLocationRelativeTo(null);
+                        jf.setSize(250, 500);
+                        jf.setVisible(true);
+                    } else if (jcb.getSelectedIndex() == 8) {
+                        JFrame jf = new JFrame("Obsługa");
+                        JList<EmployeeContainer> jl = new JList<>(db.getSesTech(vsc.get(jt.getSelectedRow()).getData_sesji(), vsc.get(jt.getSelectedRow()).getId_autora()));
+                        jf.getContentPane().add(new JScrollPane(jl));
+                        jf.setLocationRelativeTo(null);
+                        jf.setSize(250, 500);
+                        jf.setVisible(true);
                     }
+                }
+            }
+        });
+        jb3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(jt.getSelectedRow() == -1) {
+                    new MessageWindow("Wybierz element", "Wybierz element z tabeli, którego ma dotyczyć zapytanie");
+                } else {
+                    JFrame jf = new JFrame("Obsługa");
+                    JList<EmployeeContainer> jl = new JList<>(db.getConTech(vcoc.get(jt.getSelectedRow()).getId()));
+                    jf.getContentPane().add(new JScrollPane(jl));
+                    jf.setLocationRelativeTo(null);
+                    jf.setSize(250, 500);
+                    jf.setVisible(true);
                 }
             }
         });
@@ -755,6 +808,9 @@ public class DataViewer extends JFrame {
         remove(r1);
         remove(r2);
         remove(r3);
+
+        remove(jb2);
+        remove(jb3);
 
         if(jt != null) jt.clearSelection();
         cb.setSelectedIndex(-1);
