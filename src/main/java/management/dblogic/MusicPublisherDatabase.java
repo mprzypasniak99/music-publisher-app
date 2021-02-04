@@ -344,22 +344,28 @@ public class MusicPublisherDatabase {
         return res;
     }
 
-    public Vector<AlbumContainer> getAlbums(String fields) {
+    public Vector<AlbumContainer> getAlbums(boolean band, String fields) {
         String query = "SELECT id_albumu, id_autora, pseudonim, nazwa, gatunek_muzyczny FROM inf141302.Album JOIN";
 
         Vector<AlbumContainer> res = new Vector<>();
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query + " inf141302.Artysta USING(id_autora) " + (fields.equals("") ? "WHERE " + fields : ""));
-             Statement stmt2 = conn.createStatement();
-             ResultSet rs2 = stmt2.executeQuery(query + " inf141302.Zespol USING(id_autora) " + (fields.equals("") ? "WHERE " + fields : ""));) {
-            while(rs.next()) {
-                res.add(new AlbumContainer(rs.getLong(1), rs.getLong(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+        if(!band) {
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(query + " inf141302.Artysta USING(id_autora) " + (!fields.equals("") ? "WHERE " + fields : ""));) {
+                while (rs.next()) {
+                    res.add(new AlbumContainer(rs.getLong(1), rs.getLong(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+                }
+            } catch (SQLException ex) {
+                ErrorHandler.handleError(ex.getErrorCode());
             }
-            while(rs2.next()) {
-                res.add(new AlbumContainer(rs2.getLong(1), rs2.getLong(2), rs2.getString(3), rs2.getString(4), rs2.getString(5)));
+        } else {
+            try (Statement stmt2 = conn.createStatement();
+                 ResultSet rs2 = stmt2.executeQuery("SELECT id_albumu, id_autora, nazwa_zespolu, nazwa, gatunek_muzyczny FROM inf141302.Album JOIN inf141302.Zespol USING(id_autora) " + (!fields.equals("") ? "WHERE " + fields : ""));) {
+                while (rs2.next()) {
+                    res.add(new AlbumContainer(rs2.getLong(1), rs2.getLong(2), rs2.getString(3), rs2.getString(4), rs2.getString(5)));
+                }
+            } catch (SQLException ex) {
+                ErrorHandler.handleError(ex.getErrorCode());
             }
-        } catch (SQLException ex) {
-            ErrorHandler.handleError(ex.getErrorCode());
         }
         return res;
     }

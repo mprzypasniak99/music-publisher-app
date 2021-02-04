@@ -1,5 +1,6 @@
 package management.gui;
 
+import containers.AlbumContainer;
 import management.dblogic.MusicPublisherDatabase;
 
 import javax.swing.*;
@@ -63,8 +64,9 @@ public class DataViewer extends JFrame {
     private final JButton jb3 = new JButton();
 
     private JTable jt;
-    private final JScrollPane js = new JScrollPane();
+    private JScrollPane js;
 
+    private Vector<AlbumContainer> vac;
     public DataViewer(MusicPublisherDatabase db) {
         nft.setValueClass(Double.class);
         bg.add(r1);bg.add(r2);bg.add(r3);
@@ -446,12 +448,41 @@ public class DataViewer extends JFrame {
                 if (jcb.getSelectedIndex() == -1) {
                     new MessageWindow("Nie wybrano rodzaju danych", "Wybierz rodzaj danych, który chcesz obejrzeć");
                 } else if (jcb.getSelectedIndex() == 0) {
-                    
+                    if(r1.isSelected()) {
+                        vac = db.getAlbums(false, whereAlbums());
+                    } else if(r2.isSelected()) {
+                        vac = db.getAlbums(true, whereAlbums());
+                    } else {
+                        vac = new Vector<>();
+                        vac.addAll(db.getAlbums(false, whereAlbums()));
+                        vac.addAll(db.getAlbums(true, whereAlbums()));
+                    }
+                    String[] columns = {"Autor", "Nazwa", "Gatunek"};
+                    String[][] data = new String[vac.size()][3];
+                    for(int i = 0; i < vac.size(); i++) {
+                        data[i][0] = vac.get(i).getAutor();
+                        data[i][1] = vac.get(i).getNazwa();
+                        data[i][2] = vac.get(i).getGatunek();
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+
+                } else if (jcb.getSelectedIndex() == 1) {
+
                 }
             }
         });
+        jb.setBounds(210, 320, 100, 40);
+        add(jb);
         setLayout(null);
-        setSize(500, 500);
+        setSize(1000, 500);
         setLocationRelativeTo(null);
         setVisible(true);
 
@@ -493,6 +524,7 @@ public class DataViewer extends JFrame {
         cb.setSelectedIndex(-1);
         remove(cb);
     }
+
     private String and(String str) {
         if(!str.equals("")) {
             return " AND ";
@@ -500,6 +532,7 @@ public class DataViewer extends JFrame {
             return "";
         }
     }
+
     private String whereAlbums() {
         String tmp = "";
         if(r1.isSelected()) {
@@ -514,7 +547,7 @@ public class DataViewer extends JFrame {
             }
         } else if (r2.isSelected()) {
             if(!tf.getText().equals("")) {
-                tmp += "nazwa = " + tf.getText();
+                tmp += "nazwa_zespolu = " + tf.getText();
             }
         }
         if(!tf4.getText().equals("")) {
@@ -522,9 +555,6 @@ public class DataViewer extends JFrame {
         }
         if(!tf5.getText().equals("")) {
             tmp += and(tmp) + "gatunek_muzyczny = " + tf5.getText();
-        }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
         }
         return tmp;
     }
@@ -540,9 +570,6 @@ public class DataViewer extends JFrame {
         if(!tf3.getText().equals("")) {
             tmp += and(tmp) + "pseudonim = " + tf3.getText();
         }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
-        }
         return tmp;
     }
 
@@ -550,9 +577,6 @@ public class DataViewer extends JFrame {
         String tmp = "";
         if(!tf.getText().equals("")) {
             tmp += "nazwa_zespolu = " + tf.getText();
-        }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
         }
         return tmp;
     }
@@ -589,9 +613,6 @@ public class DataViewer extends JFrame {
         if(ftf3.getValue() != null) {
             tmp += and(tmp) + "kwota = " + ftf3.getText();
         }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
-        }
         return tmp;
     }
 
@@ -615,9 +636,6 @@ public class DataViewer extends JFrame {
                     tmp += and(tmp) + "etat = " + tf3.getText();
                 }
             }
-        }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
         }
         return tmp;
     }
@@ -652,9 +670,6 @@ public class DataViewer extends JFrame {
         if(ftf3.getValue() != null) {
             tmp += and(tmp) + "kwota = " + ftf3.getText();
         }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
-        }
         return tmp;
     }
 
@@ -672,9 +687,6 @@ public class DataViewer extends JFrame {
         if(!tf3.getText().equals("")) {
             tmp += and(tmp) + "ulica = " + tf3.getText();
         }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
-        }
         return tmp;
     }
 
@@ -688,9 +700,6 @@ public class DataViewer extends JFrame {
         }
         if(ftf2.getValue() != null) {
             tmp += and(tmp) + "data_zakonczenia = TO_DATE('" + ftf2.getText() + "', 'YYYY-MM-DD') ";
-        }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
         }
         return tmp;
     }
@@ -724,9 +733,6 @@ public class DataViewer extends JFrame {
         if(ftf.getValue() != null) {
             tmp += and(tmp) + "data_sesji = TO_DATE('" + ftf.getText() + "', 'YYYY-MM-DD') ";
         }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
-        }
         return tmp;
     }
 
@@ -740,9 +746,6 @@ public class DataViewer extends JFrame {
         }
         if(!tf3.getText().equals("")) {
             tmp += and(tmp) + "ulica = " + tf3.getText();
-        }
-        if(!tmp.equals("")) {
-            tmp = " WHERE " + tmp;
         }
         return tmp;
     }

@@ -20,9 +20,9 @@ public class AlbumContainer {
         return id_albumu;
     }
 
-    public long getId_autora() {
-        return id_autora;
-    }
+    public long getId_autora() { return id_autora; }
+
+    public String getAutor() { return autor; }
 
     public String getNazwa() {
         return nazwa;
