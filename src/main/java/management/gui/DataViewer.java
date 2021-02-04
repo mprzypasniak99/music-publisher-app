@@ -638,7 +638,18 @@ public class DataViewer extends JFrame {
                     add(js);
                     repaint();
                 } else if (jcb.getSelectedIndex() == 8) {
-                    vsc = db.getSessions(whereSession());
+                    if(r1.isSelected()) {
+                        vsc = db.getSessions(false, whereSession());
+                    }
+                    else if(r2.isSelected()) {
+                        vsc = db.getSessions(true, whereSession());
+                    }
+                    else {
+                        vsc = new Vector<>();
+                        vsc.addAll(db.getSessions(false, whereSession()));
+                        vsc.addAll(db.getSessions(true, whereSession()));
+                    }
+
                     String[] columns = {"Autor", "Data", "Studio"};
                     String[][] data = new String[vsc.size()][3];
                     for(int i = 0; i < vsc.size(); i++) {
@@ -736,28 +747,37 @@ public class DataViewer extends JFrame {
         }
     }
 
+    private String prepareForSearch(String str) {
+        if(!str.equals("")) {
+            return "'%" + str + "%'";
+        }
+        else {
+            return "";
+        }
+    }
+
     private String whereAlbums() {
         String tmp = "";
         if(r1.isSelected()) {
             if(!tf.getText().equals("")) {
-                tmp += "imie = " + tf.getText();
+                tmp += "imie LIKE " + prepareForSearch(tf.getText());
             }
             if(!tf2.getText().equals("")) {
-                tmp += and(tmp) + "nazwisko = " + tf2.getText();
+                tmp += and(tmp) + "nazwisko LIKE " + prepareForSearch(tf2.getText());
             }
             if(!tf3.getText().equals("")) {
-                tmp += and(tmp) + "pseudonim = " + tf3.getText();
+                tmp += and(tmp) + "pseudonim LIKE " + prepareForSearch(tf3.getText());
             }
         } else if (r2.isSelected()) {
             if(!tf.getText().equals("")) {
-                tmp += "nazwa_zespolu = " + tf.getText();
+                tmp += "nazwa_zespolu LIKE " + prepareForSearch(tf.getText());
             }
         }
         if(!tf4.getText().equals("")) {
-            tmp += and(tmp) + "nazwa = " + tf4.getText();
+            tmp += and(tmp) + "nazwa LIKE " + prepareForSearch(tf4.getText());
         }
         if(!tf5.getText().equals("")) {
-            tmp += and(tmp) + "gatunek_muzyczny = " + tf5.getText();
+            tmp += and(tmp) + "gatunek_muzyczny LIKE " + prepareForSearch(tf5.getText());
         }
         return tmp;
     }
@@ -765,13 +785,13 @@ public class DataViewer extends JFrame {
     private String whereArtist() {
         String tmp = "";
         if(!tf.getText().equals("")) {
-            tmp += "imie = " + tf.getText();
+            tmp += "imie LIKE " + prepareForSearch(tf.getText());
         }
         if(!tf2.getText().equals("")) {
-            tmp += and(tmp) + "nazwisko = " + tf2.getText();
+            tmp += and(tmp) + "nazwisko LIKE " + prepareForSearch(tf2.getText());
         }
         if(!tf3.getText().equals("")) {
-            tmp += and(tmp) + "pseudonim = " + tf3.getText();
+            tmp += and(tmp) + "pseudonim LIKE " + prepareForSearch(tf3.getText());
         }
         return tmp;
     }
@@ -779,7 +799,7 @@ public class DataViewer extends JFrame {
     private String whereBand() {
         String tmp = "";
         if(!tf.getText().equals("")) {
-            tmp += "nazwa_zespolu = " + tf.getText();
+            tmp += "nazwa_zespolu LIKE " + prepareForSearch(tf.getText());
         }
         return tmp;
     }
@@ -788,24 +808,24 @@ public class DataViewer extends JFrame {
         String tmp = "";
         if(r1.isSelected()) {
             if(!tf.getText().equals("")) {
-                tmp += "a.imie = " + tf.getText();
+                tmp += "ar.imie LIKE " + prepareForSearch(tf.getText());
             }
             if(!tf2.getText().equals("")) {
-                tmp += and(tmp) + "a.nazwisko = " + tf2.getText();
+                tmp += and(tmp) + "ar.nazwisko LIKE " + prepareForSearch(tf2.getText());
             }
             if(!tf3.getText().equals("")) {
-                tmp += and(tmp) + "a.pseudonim = " + tf3.getText();
+                tmp += and(tmp) + "ar.pseudonim LIKE " + prepareForSearch(tf3.getText());
             }
         } else if (r2.isSelected()) {
             if(!tf.getText().equals("")) {
-                tmp += "nazwa_zespolu = " + tf.getText();
+                tmp += "nazwa_zespolu LIKE " + prepareForSearch(tf.getText());
             }
         }
         if(!tf4.getText().equals("")){
-            tmp += and(tmp) + "imie = " + tf4.getText();
+            tmp += and(tmp) + "me.imie LIKE " + prepareForSearch(tf4.getText());
         }
         if(!tf5.getText().equals("")){
-            tmp += and(tmp) + "nazwisko = " + tf5.getText();
+            tmp += and(tmp) + "me.nazwisko LIKE " + prepareForSearch(tf5.getText());
         }
         if(ftf.getValue() != null) {
             tmp += and(tmp) + "data_zawarcia = TO_DATE('" + ftf.getText() + "', 'YYYY-MM-DD') ";
@@ -822,21 +842,21 @@ public class DataViewer extends JFrame {
     private String whereEmployee() {
         String tmp = "";
         if(!tf.getText().equals("")){
-            tmp += and(tmp) + "imie = " + tf.getText();
+            tmp += and(tmp) + "imie LIKE " + prepareForSearch(tf.getText());
         }
         if(!tf.getText().equals("")){
-            tmp += and(tmp) + "nazwisko = " + tf.getText();
+            tmp += and(tmp) + "nazwisko LIKE " + prepareForSearch(tf.getText());
         }
         if(cb.getSelectedIndex() != -1) {
             if(cb.getSelectedItem().equals("MENEDŻER")) {
-                tmp += and(tmp) + "etat = " + cb.getSelectedItem();
+                tmp += and(tmp) + "etat LIKE " + prepareForSearch((String)cb.getSelectedItem());
             }
             if(cb.getSelectedItem().equals("TECHNICZNY")) {
-                tmp += and(tmp) + "etat = " + cb.getSelectedItem();
+                tmp += and(tmp) + "etat LIKE " + prepareForSearch((String)cb.getSelectedItem());
             }
             if(cb.getSelectedItem().equals("INNY")) {
                 if(!tf3.getText().equals("")) {
-                    tmp += and(tmp) + "etat = " + tf3.getText();
+                    tmp += and(tmp) + "etat LIKE " + prepareForSearch(tf3.getText());
                 }
             }
         }
@@ -846,21 +866,21 @@ public class DataViewer extends JFrame {
     private String whereBill() {
         String tmp = "";
         if(!tf.getText().equals("")){
-            tmp += and(tmp) + "imie = " + tf.getText();
+            tmp += and(tmp) + "imie LIKE " + prepareForSearch(tf.getText());
         }
         if(!tf.getText().equals("")){
-            tmp += and(tmp) + "nazwisko = " + tf.getText();
+            tmp += and(tmp) + "nazwisko LIKE " + prepareForSearch(tf.getText());
         }
         if(cb.getSelectedIndex() != -1) {
             if(cb.getSelectedItem().equals("MENEDŻER")) {
-                tmp += and(tmp) + "etat = " + cb.getSelectedItem();
+                tmp += and(tmp) + "etat LIKE " + prepareForSearch((String)cb.getSelectedItem());
             }
             if(cb.getSelectedItem().equals("TECHNICZNY")) {
-                tmp += and(tmp) + "etat = " + cb.getSelectedItem();
+                tmp += and(tmp) + "etat LIKE " + prepareForSearch((String)cb.getSelectedItem());
             }
             if(cb.getSelectedItem().equals("INNY")) {
                 if(!tf3.getText().equals("")) {
-                    tmp += and(tmp) + "etat = " + tf3.getText();
+                    tmp += and(tmp) + "etat LIKE " + prepareForSearch(tf3.getText());
                 }
             }
         }
@@ -882,13 +902,13 @@ public class DataViewer extends JFrame {
             tmp += and(tmp) + "data_koncertu = TO_DATE('" + ftf.getText() + "', 'YYYY-MM-DD') ";
         }
         if(!tf.getText().equals("")) {
-            tmp += "kraj = " + tf.getText();
+            tmp += "kraj LIKE " + prepareForSearch(tf.getText());
         }
         if(!tf2.getText().equals("")) {
-            tmp += and(tmp) + "miasto = " + tf2.getText();
+            tmp += and(tmp) + "miasto LIKE " + prepareForSearch(tf2.getText());
         }
         if(!tf3.getText().equals("")) {
-            tmp += and(tmp) + "ulica = " + tf3.getText();
+            tmp += and(tmp) + "ulica LIKE " + prepareForSearch(tf3.getText());
         }
         return tmp;
     }
@@ -896,7 +916,7 @@ public class DataViewer extends JFrame {
     private String whereTour() {
         String tmp = "";
         if(!tf.getText().equals("")) {
-            tmp += "nazwa_trasy = " + tf.getText();
+            tmp += "nazwa_trasy LIKE " + prepareForSearch(tf.getText());
         }
         if(ftf.getValue() != null) {
             tmp += and(tmp) + "data_rozpoczecia = TO_DATE('" + ftf.getText() + "', 'YYYY-MM-DD') ";
@@ -911,27 +931,27 @@ public class DataViewer extends JFrame {
         String tmp = "";
         if(r1.isSelected()) {
             if(!tf.getText().equals("")) {
-                tmp += "imie = " + tf.getText();
+                tmp += "imie LIKE " + prepareForSearch(tf.getText());
             }
             if(!tf2.getText().equals("")) {
-                tmp += and(tmp) + "nazwisko = " + tf2.getText();
+                tmp += and(tmp) + "nazwisko LIKE " + prepareForSearch(tf2.getText());
             }
             if(!tf3.getText().equals("")) {
-                tmp += and(tmp) + "pseudonim = " + tf3.getText();
+                tmp += and(tmp) + "pseudonim LIKE " + prepareForSearch(tf3.getText());
             }
         } else if (r2.isSelected()) {
             if(!tf.getText().equals("")) {
-                tmp += "nazwa_zespolu = " + tf.getText();
+                tmp += "nazwa_zespolu LIKE " + prepareForSearch(tf.getText());
             }
         }
         if(!tf4.getText().equals("")) {
-            tmp += "kraj = " + tf4.getText();
+            tmp += "kraj LIKE " + prepareForSearch(tf4.getText());
         }
         if(!tf5.getText().equals("")) {
-            tmp += and(tmp) + "miasto = " + tf5.getText();
+            tmp += and(tmp) + "miasto LIKE " + prepareForSearch(tf5.getText());
         }
         if(!tf6.getText().equals("")) {
-            tmp += and(tmp) + "ulica = " + tf6.getText();
+            tmp += and(tmp) + "ulica LIKE " + prepareForSearch(tf6.getText());
         }
         if(ftf.getValue() != null) {
             tmp += and(tmp) + "data_sesji = TO_DATE('" + ftf.getText() + "', 'YYYY-MM-DD') ";
@@ -942,13 +962,13 @@ public class DataViewer extends JFrame {
     private String whereStudio() {
         String tmp = "";
         if(!tf.getText().equals("")) {
-            tmp += "kraj = " + tf.getText();
+            tmp += "kraj LIKE " + prepareForSearch(tf.getText());
         }
         if(!tf2.getText().equals("")) {
-            tmp += and(tmp) + "miasto = " + tf2.getText();
+            tmp += and(tmp) + "miasto LIKE " + prepareForSearch(tf2.getText());
         }
         if(!tf3.getText().equals("")) {
-            tmp += and(tmp) + "ulica = " + tf3.getText();
+            tmp += and(tmp) + "ulica LIKE " + prepareForSearch(tf3.getText());
         }
         return tmp;
     }

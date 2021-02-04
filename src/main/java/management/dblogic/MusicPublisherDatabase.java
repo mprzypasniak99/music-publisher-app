@@ -623,7 +623,7 @@ public class MusicPublisherDatabase {
         try(Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT id_kontraktu, ar.pseudonim, me.imie, me.nazwisko, data_zawarcia, data_wygasniecia, kwota FROM inf141302.Kontrakt JOIN inf141302.Artysta ar USING(id_autora) JOIN inf141302.Pracownik me ON me.id_prac = id_menadzera " + (!fields.equals("") ? "WHERE " + fields : ""));
             Statement stmt2 = conn.createStatement();
-            ResultSet rs2 = stmt2.executeQuery("SELECT id_kontraktu, nazwa_zespolu, imie, nazwisko, data_zawarcia, data_wygasniecia, kwota FROM inf141302.Kontrakt JOIN inf141302.Zespol USING(id_autora) JOIN inf141302.Pracownik ON id_menadzera = id_prac " + (!fields.equals("") ? "WHERE " + fields : ""));) {
+            ResultSet rs2 = stmt2.executeQuery("SELECT id_kontraktu, nazwa_zespolu, imie, nazwisko, data_zawarcia, data_wygasniecia, kwota FROM inf141302.Kontrakt JOIN inf141302.Zespol ar USING(id_autora) JOIN inf141302.Pracownik me ON id_menadzera = id_prac " + (!fields.equals("") ? "WHERE " + fields : ""));) {
             while(rs.next()) {
                 res.add(new ContractContainer(rs.getLong(1), rs.getString(2), rs.getString(3) + " " + rs.getString(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7)));
             }
@@ -1004,20 +1004,27 @@ public class MusicPublisherDatabase {
         return res;
     }
 
-    public Vector<SessionContainer> getSessions(String fields) {
+    public Vector<SessionContainer> getSessions(boolean band, String fields) {
         Vector<SessionContainer> res = new Vector<>();
-        try(Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT id_autora, pseudonim, data_sesji, id_studia, kraj, miasto, ulica FROM inf141302.Artysta JOIN inf141302.Sesja_nagraniowa USING(id_autora) JOIN inf141302.Studio USING(id_studia) " + (!fields.equals("") ? "WHERE " + fields : ""));
-            Statement stmt2 = conn.createStatement();
-            ResultSet rs2 = stmt2.executeQuery("SELECT id_autora, nazwa_zespolu, data_sesji, id_studia, kraj, miasto, ulica FROM inf141302.Zespol JOIN inf141302.Sesja_nagraniowa USING(id_autora) JOIN inf141302.Studio USING(id_studia) " + (!fields.equals("") ? "WHERE " + fields : ""));) {
-            while(rs.next()) {
-                res.add(new SessionContainer(rs.getLong(1), rs.getString(2), rs.getDate(3), rs.getLong(4), rs.getString(5), rs.getString(6), rs.getString(7)));
+        if(!band) {
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT id_autora, pseudonim, data_sesji, id_studia, kraj, miasto, ulica FROM inf141302.Artysta JOIN inf141302.Sesja_nagraniowa USING(id_autora) JOIN inf141302.Studio USING(id_studia) " + (!fields.equals("") ? "WHERE " + fields : ""));) {
+                while (rs.next()) {
+                    res.add(new SessionContainer(rs.getLong(1), rs.getString(2), rs.getDate(3), rs.getLong(4), rs.getString(5), rs.getString(6), rs.getString(7)));
+                }
+            } catch (SQLException ex) {
+                ErrorHandler.handleError(ex.getErrorCode());
             }
-            while(rs2.next()) {
-                res.add(new SessionContainer(rs2.getLong(1), rs2.getString(2), rs2.getDate(3), rs2.getLong(4), rs2.getString(5), rs2.getString(6), rs2.getString(7)));
+        }
+        else {
+            try(Statement stmt2 = conn.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT id_autora, nazwa_zespolu, data_sesji, id_studia, kraj, miasto, ulica FROM inf141302.Zespol JOIN inf141302.Sesja_nagraniowa USING(id_autora) JOIN inf141302.Studio USING(id_studia)");) {
+                while(rs2.next()) {
+                    res.add(new SessionContainer(rs2.getLong(1), rs2.getString(2), rs2.getDate(3), rs2.getLong(4), rs2.getString(5), rs2.getString(6), rs2.getString(7)));
+                }
+            } catch (SQLException ex) {
+                ErrorHandler.handleError(ex.getErrorCode());
             }
-        } catch (SQLException ex) {
-            ErrorHandler.handleError(ex.getErrorCode());
         }
         return res;
     }
