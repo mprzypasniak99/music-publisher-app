@@ -23,6 +23,8 @@ public class SessionContainer {
 
     public long getStudioId() {return studio.getId();}
 
+    public String getStudio() {return studio.toString();}
+
     public String toString() {return "Sesja z " + data_sesji + " dla " + autor;}
 
 

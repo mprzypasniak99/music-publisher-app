@@ -1,6 +1,6 @@
 package management.gui;
 
-import containers.AlbumContainer;
+import containers.*;
 import management.dblogic.MusicPublisherDatabase;
 
 import javax.swing.*;
@@ -67,6 +67,14 @@ public class DataViewer extends JFrame {
     private JScrollPane js;
 
     private Vector<AlbumContainer> vac;
+    private Vector<AuthorContainer> vauc;
+    private Vector<ContractContainer> vcc;
+    private Vector<EmployeeContainer> vec;
+    private Vector<BillContainer> vbc;
+    private Vector<ConcertContainer> vcoc;
+    private Vector<TourContainer> vtc;
+    private Vector<SessionContainer> vsc;
+    private Vector<StudioContainer> vstc;
     public DataViewer(MusicPublisherDatabase db) {
         nft.setValueClass(Double.class);
         bg.add(r1);bg.add(r2);bg.add(r3);
@@ -470,12 +478,207 @@ public class DataViewer extends JFrame {
                             return false;
                         }
                     };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
                     js = new JScrollPane(jt);
                     js.setBounds(320, 10, 500, 500);
                     add(js);
-
+                    repaint();
                 } else if (jcb.getSelectedIndex() == 1) {
-
+                    vauc = db.getAuthors(false, whereArtist());
+                    String[] columns = {"Imię", "Nazwisko", "Pseudonim"};
+                    String[][] data = new String[vauc.size()][3];
+                    for(int i = 0; i < vauc.size(); i++) {
+                        data[i][0] = vauc.get(i).getImie();
+                        data[i][1] = vauc.get(i).getNazwisko();
+                        data[i][2] = vauc.get(i).getPseudonim();
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+                    repaint();
+                } else if (jcb.getSelectedIndex() == 2) {
+                    vauc = db.getAuthors(true, whereBand());
+                    String[] columns = {"Nazwa"};
+                    String[][] data = new String[vauc.size()][1];
+                    for(int i = 0; i < vauc.size(); i++) {
+                        data[i][0] = vauc.get(i).getPseudonim();
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+                    repaint();
+                } else if (jcb.getSelectedIndex() == 3) {
+                    vcc = db.getContracts(whereContract());
+                    String[] columns = {"Autor", "Menedżer", "Data rozp.", "Data zak.", "Kwota", "Rozpoczęty"};
+                    String[][] data = new String[vcc.size()][6];
+                    for(int i = 0; i < vcc.size(); i++) {
+                        data[i][0] = vcc.get(i).getAutor();
+                        data[i][1] = vcc.get(i).getMenedzer();
+                        data[i][2] = vcc.get(i).getData_rozp().toString();
+                        data[i][3] = vcc.get(i).getData_zak().toString();
+                        data[i][4] = String.format("%.2f", vcc.get(i).getKwota());
+                        data[i][5] = (vcc.get(i).getStarted() ? "Tak" : "Nie");
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+                    repaint();
+                } else if (jcb.getSelectedIndex() == 4) {
+                    vec = db.getEmployees(whereEmployee());
+                    String[] columns = {"Imię", "Nazwisko", "Etat"};
+                    String[][] data = new String[vec.size()][3];
+                    for(int i = 0; i < vec.size(); i++) {
+                        data[i][0] = vec.get(i).getImie();
+                        data[i][1] = vec.get(i).getNazwisko();
+                        data[i][2] = vec.get(i).getEtat();
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+                    repaint();
+                } else if (jcb.getSelectedIndex() == 5) {
+                    vbc = db.getBills(whereBill());
+                    String[] columns = {"Pracownik", "Data rozp.", "Data zak.", "Kwota", "Rozpoczęty"};
+                    String[][] data = new String[vbc.size()][5];
+                    for(int i = 0; i < vbc.size(); i++) {
+                        data[i][0] = vbc.get(i).getPracownik();
+                        data[i][1] = vbc.get(i).getData_rozp().toString();
+                        data[i][2] = vbc.get(i).getData_zak().toString();
+                        data[i][3] = String.format("%.2f", vbc.get(i).getKwota());
+                        data[i][4] = (vbc.get(i).getStarted() ? "Tak" : "Nie");
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+                    repaint();
+                } else if (jcb.getSelectedIndex() == 6) {
+                    vcoc = db.getConcerts(whereConcert());
+                    String[] columns = {"Data koncertu", "Kraj", "Ulica", "Miasto", "Zysk"};
+                    String[][] data = new String[vcoc.size()][5];
+                    for(int i = 0; i < vcoc.size(); i++) {
+                        data[i][0] = vcoc.get(i).getData().toString();
+                        data[i][1] = vcoc.get(i).getKraj();
+                        data[i][2] = vcoc.get(i).getMiasto();
+                        data[i][3] = vcoc.get(i).getUlica();
+                        data[i][4] = String.format("%.2f", vcoc.get(i).getZysk());
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+                    repaint();
+                } else if (jcb.getSelectedIndex() == 7) {
+                    vtc = db.getTours(whereTour());
+                    String[] columns = {"Nazwa", "Data rozp.", "Data zak.", "Rozpoczęty"};
+                    String[][] data = new String[vtc.size()][4];
+                    for(int i = 0; i < vtc.size(); i++) {
+                        data[i][0] = vtc.get(i).getNazwa();
+                        data[i][1] = vtc.get(i).getData_rozp().toString();
+                        data[i][2] = vtc.get(i).getData_zak().toString();
+                        data[i][3] = (vtc.get(i).getStarted() ? "Tak" : "Nie");
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+                    repaint();
+                } else if (jcb.getSelectedIndex() == 8) {
+                    vsc = db.getSessions(whereSession());
+                    String[] columns = {"Autor", "Data", "Studio"};
+                    String[][] data = new String[vsc.size()][3];
+                    for(int i = 0; i < vsc.size(); i++) {
+                        data[i][0] = vsc.get(i).getAutor();
+                        data[i][1] = vsc.get(i).getData_sesji().toString();
+                        data[i][2] = vsc.get(i).getStudio();
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+                    repaint();
+                } else if (jcb.getSelectedIndex() == 9) {
+                    vstc = db.getStudios(whereStudio());
+                    String[] columns = {"Kraj", "Miasto", "Ulica"};
+                    String[][] data = new String[vstc.size()][3];
+                    for(int i = 0; i < vstc.size(); i++) {
+                        data[i][0] = vstc.get(i).getKraj();
+                        data[i][1] = vstc.get(i).getMiasto();
+                        data[i][2] = vstc.get(i).getUlica();
+                    }
+                    jt = new JTable(data, columns){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    jt.clearSelection();
+                    if(js != null) remove(js);
+                    js = new JScrollPane(jt);
+                    js.setBounds(320, 10, 500, 500);
+                    add(js);
+                    repaint();
                 }
             }
         });
