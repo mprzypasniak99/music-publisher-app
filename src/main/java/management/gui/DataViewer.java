@@ -483,6 +483,8 @@ public class DataViewer extends JFrame {
                     js = new JScrollPane(jt);
                     js.setBounds(320, 10, 500, 500);
                     add(js);
+                    jb2.setText("Wyświetl utwory");
+                    add(jb2);
                     repaint();
                 } else if (jcb.getSelectedIndex() == 1) {
                     vauc = db.getAuthors(false, whereArtist());
@@ -693,7 +695,26 @@ public class DataViewer extends JFrame {
                 }
             }
         });
+        jb2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(jt.getSelectedRow() == -1) {
+                    new MessageWindow("Wybierz element", "Wybierz element z tabeli, którego ma dotyczyć zapytanie");
+                } else {
+                    if (jcb.getSelectedIndex() == 0) {
+                        JFrame jf = new JFrame("Utwory");
+                        JList<SongContainer> jl = new JList<>(db.getSongs(vac.get(jt.getSelectedRow()).getId_albumu()));
+                        jf.getContentPane().add(new JScrollPane(jl));
+                        jf.setLocationRelativeTo(null);
+                        jf.setSize(250, 500);
+                        jf.setVisible(true);
+                    }
+                }
+            }
+        });
         jb.setBounds(210, 320, 100, 40);
+        jb2.setBounds(110, 360, 200, 40);
+        jb3.setBounds(110, 400, 200, 40);
         add(jb);
         setLayout(null);
         setSize(1000, 500);
@@ -735,6 +756,7 @@ public class DataViewer extends JFrame {
         remove(r2);
         remove(r3);
 
+        if(jt != null) jt.clearSelection();
         cb.setSelectedIndex(-1);
         remove(cb);
     }
