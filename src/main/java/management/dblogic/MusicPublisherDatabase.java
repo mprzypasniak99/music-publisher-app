@@ -3,6 +3,7 @@ package management.dblogic;
 import management.app.MusicPublisherApp;
 import containers.*;
 import management.gui.MessageWindow;
+import oracle.jdbc.proxy.annotation.Pre;
 import oracle.sql.NUMBER;
 
 import java.sql.*;
@@ -1261,5 +1262,23 @@ public class MusicPublisherDatabase {
             ErrorHandler.handleError(ex.getErrorCode());
         }
         return res;
+    }
+
+    public void deleteWithID(String table, long id, String fieldName) {
+        try(PreparedStatement stmt = conn.prepareStatement("DELETE FROM inf141302." + table + " WHERE " + fieldName + "=" + id)) {
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
+    }
+
+    public void deleteSession(Date sessionDate, long authorId) {
+        try(PreparedStatement stmt = conn.prepareStatement("DELETE FROM inf141302.SESJA_NAGRANIOWA WHERE id_autora = ? AND data_sesji = ?")) {
+            stmt.setLong(1, authorId);
+            stmt.setDate(2,sessionDate);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            ErrorHandler.handleError(ex.getErrorCode());
+        }
     }
 }
