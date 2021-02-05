@@ -758,20 +758,21 @@ public class DataViewer extends JFrame {
                 if(jt.getSelectedRow() == -1) {
                     new MessageWindow("Wybierz element", "Wybierz element z tabeli, który ma zostać usunięty");
                 } else {
+                    boolean result = false;
                     if(jcb.getSelectedIndex() == 0) {
-                        db.deleteWithID("Album", vac.get(jt.getSelectedRow()).getId_albumu(),
+                        result = db.deleteWithID("Album", vac.get(jt.getSelectedRow()).getId_albumu(),
                                 "id_albumu");
                     }
                     else if(jcb.getSelectedIndex() == 1) {
-                        db.deleteWithID("Artysta", vauc.get(jt.getSelectedRow()).getId(),
+                        result = db.deleteWithID("Artysta", vauc.get(jt.getSelectedRow()).getId(),
                                 "id_autora");
                     }
                     else if(jcb.getSelectedIndex() == 2) {
-                        db.deleteWithID("Zespoly", vauc.get(jt.getSelectedRow()).getId(),
+                        result = db.deleteWithID("Zespoly", vauc.get(jt.getSelectedRow()).getId(),
                                 "id_autora");
                     }
                     else if(jcb.getSelectedIndex() == 3) {
-                        db.deleteWithID("Kontrakt", vcc.get(jt.getSelectedRow()).getId_kontraktu(),
+                        result = db.deleteWithID("Kontrakt", vcc.get(jt.getSelectedRow()).getId_kontraktu(),
                                 "id_kontraktu");
                     }
                     else if(jcb.getSelectedIndex() == 4) {
@@ -781,27 +782,34 @@ public class DataViewer extends JFrame {
                         } else if(tmp.getEtat().equals("TECHNICZNY")) {
                             db.deleteWithID("Techniczny", tmp.getId(), "id_prac");
                         }
-                        db.deleteWithID("Pracownik", tmp.getId(), "id_prac");
+                        result = db.deleteWithID("Pracownik", tmp.getId(), "id_prac");
                     }
                     else if(jcb.getSelectedIndex() == 5) {
-                        db.deleteWithID("Rachunek", vbc.get(jt.getSelectedRow()).getId_rachunku(),
+                        result = db.deleteWithID("Rachunek", vbc.get(jt.getSelectedRow()).getId_rachunku(),
                                 "id_rachunku");
                     }
                     else if(jcb.getSelectedIndex() == 6) {
-                        db.deleteWithID("Koncert", vcoc.get(jt.getSelectedRow()).getId(),
+                        result = db.deleteWithID("Koncert", vcoc.get(jt.getSelectedRow()).getId(),
                                 "id_koncertu");
                     }
                     else if(jcb.getSelectedIndex() == 7) {
-                        db.deleteWithID("Trasa", vtc.get(jt.getSelectedRow()).getId_trasy(),
+                        result = db.deleteWithID("Trasa", vtc.get(jt.getSelectedRow()).getId_trasy(),
                                 "id_trasy");
                     }
                     else if(jcb.getSelectedIndex() == 8) {
-                        db.deleteSession(vsc.get(jt.getSelectedRow()).getData_sesji(),
+                        result = db.deleteSession(vsc.get(jt.getSelectedRow()).getData_sesji(),
                                 vsc.get(jt.getSelectedRow()).getId_autora());
                     }
                     else if(jcb.getSelectedIndex() == 9){
-                        db.deleteWithID("Studio", vstc.get(jt.getSelectedRow()).getId(),
+                        result = db.deleteWithID("Studio", vstc.get(jt.getSelectedRow()).getId(),
                                 "id_studia");
+                    }
+
+                    if(result) {
+                        new MessageWindow("Sukces!", "Usuwanie zakończyło się powodzeniem");
+                    }
+                    else {
+                        new MessageWindow("Porażka!", "Usuwanie nie powiodło się!");
                     }
                 }
             }
@@ -825,7 +833,7 @@ public class DataViewer extends JFrame {
         jb.setBounds(210, 320, 100, 40);
         jb2.setBounds(110, 360, 200, 40);
         jb3.setBounds(110, 400, 200, 40);
-        jb4.setBounds(210, 420, 100, 40);
+        jb4.setBounds(80, 320, 100, 40);
         add(jb);
         add(jb4);
         setLayout(null);

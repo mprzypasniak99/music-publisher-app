@@ -1264,21 +1264,25 @@ public class MusicPublisherDatabase {
         return res;
     }
 
-    public void deleteWithID(String table, long id, String fieldName) {
+    public boolean deleteWithID(String table, long id, String fieldName) {
         try(PreparedStatement stmt = conn.prepareStatement("DELETE FROM inf141302." + table + " WHERE " + fieldName + "=" + id)) {
             stmt.executeUpdate();
+            return true;
         } catch (SQLException ex) {
             ErrorHandler.handleError(ex.getErrorCode());
+            return false;
         }
     }
 
-    public void deleteSession(Date sessionDate, long authorId) {
+    public boolean deleteSession(Date sessionDate, long authorId) {
         try(PreparedStatement stmt = conn.prepareStatement("DELETE FROM inf141302.SESJA_NAGRANIOWA WHERE id_autora = ? AND data_sesji = ?")) {
             stmt.setLong(1, authorId);
             stmt.setDate(2,sessionDate);
             stmt.executeUpdate();
+            return true;
         } catch (SQLException ex) {
             ErrorHandler.handleError(ex.getErrorCode());
+            return false;
         }
     }
 }
